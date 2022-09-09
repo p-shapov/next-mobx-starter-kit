@@ -33,6 +33,11 @@
             "position": "before"
           },
           {
+            "pattern": "pages/**",
+            "group": "parent",
+            "position": "before"
+          },
+          {
             "pattern": "services/**",
             "group": "parent",
             "position": "before"

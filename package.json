@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "gen-modules": "typed-scss-modules src/**/*.module.scss -n none -e default -d @import'./src/shared/styles/global.scss'; -u",
-    "dev": "concurrently \"npm:gen-modules -- -w\" \"next dev\"",
-    "build": "npm run gen-modules && next build",
-    "start": "concurrently \"npm:gen-modules -- -w\" \"next start\"",
+    "tsm": "typed-scss-modules src/**/*.module.scss -n none -e default -d @import'./src/shared/styles/index.scss'; -u",
+    "dev": "concurrently \"yarn tsm -w\" \"next dev\"",
+    "build": "yarn tsm && next build",
+    "start": "concurrently \"yarn tsm -w\" \"next start\"",
     "lint": "next lint"
   },
   "dependencies": {
