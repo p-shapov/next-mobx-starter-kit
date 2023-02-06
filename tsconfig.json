@@ -16,7 +16,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": true,
+    "experimentalDecorators": true
   },
   "include": ["pages", "src", "next-env.d.ts", "types"],
   "exclude": ["node_modules"]

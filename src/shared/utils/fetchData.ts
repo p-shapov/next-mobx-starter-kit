@@ -1,7 +1,7 @@
-import { FetchData } from 'shared/types/fetch-data';
+import { FetchData } from 'shared/types/common';
 
 export const fetchData = <T, D = T>(value: D): FetchData<T, D> => ({
   value,
-  status: 'nothing',
+  status: 'Nothing',
   error: null,
 });

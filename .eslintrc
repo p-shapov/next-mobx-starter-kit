@@ -18,27 +18,17 @@
         "groups": ["builtin", "external", "internal", ["parent", "sibling", "index"]],
         "pathGroups": [
           {
-            "pattern": "api/**",
+            "pattern": "feature/**",
             "group": "parent",
             "position": "before"
           },
           {
-            "pattern": "components/**",
+            "pattern": "module/**",
             "group": "parent",
             "position": "before"
           },
           {
-            "pattern": "containers/**",
-            "group": "parent",
-            "position": "before"
-          },
-          {
-            "pattern": "pages/**",
-            "group": "parent",
-            "position": "before"
-          },
-          {
-            "pattern": "services/**",
+            "pattern": "service/**",
             "group": "parent",
             "position": "before"
           },
