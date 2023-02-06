@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { useMemo } from 'react';
+import Link from 'next/link';
 
 import { PublicSaleForm, PublicSaleFormVM, PublicSaleModel } from 'feature/PublicSale';
 
@@ -22,6 +23,10 @@ export const Home: NextPageWithLayout<Props> = observer((data) => {
       <PublicSaleForm vm={publicSaleFormVM} />
 
       <div>{publicSaleFormVM.json}</div>
+
+      <Link href="/test/Soon">Soon</Link>
+      <Link href="/test/Started">Started</Link>
+      <Link href="/test/Finished">Finished</Link>
     </div>
   );
 });
