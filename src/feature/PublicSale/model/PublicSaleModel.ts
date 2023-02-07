@@ -7,19 +7,19 @@ import { autoFetchable } from 'shared/mobx/AutoFetchable';
 import { IPublicSaleModel } from './Interface';
 
 const fetchPrice = flow(function* () {
-  const result: number = yield api.get('/api/price/').then((res) => res.data);
+  const result: number = yield api.get('/price/').then((res) => res.data);
 
   return result;
 });
 
 const fetchPhase = flow(function* () {
-  const result: 'Soon' | 'Started' | 'Finished' = yield api.get('/api/phase/').then((res) => res.data);
+  const result: 'Soon' | 'Started' | 'Finished' = yield api.get('/phase/').then((res) => res.data);
 
   return result;
 });
 
 const fetchSupply = flow(function* (phase: 'Soon' | 'Started' | 'Finished') {
-  const result: number = yield api.get(`/api/supply/${phase}/`).then((res) => res.data);
+  const result: number = yield api.get(`/supply/${phase}/`).then((res) => res.data);
 
   return result;
 });
@@ -46,7 +46,7 @@ export class PublicSaleModel implements IPublicSaleModel {
     console.log(count);
   }
 
-  constructor(private readonly isSsr?: boolean) {
+  constructor(private readonly params?: { isSsr?: boolean }) {
     makeObservable(this, {
       price: computed,
       supply: computed,
@@ -68,19 +68,19 @@ export class PublicSaleModel implements IPublicSaleModel {
   private readonly priceAutoFetchable = autoFetchable({
     getFetch: () => fetchPrice,
     getDeps: () => [] as const,
-    isSsr: this.isSsr,
+    isSsr: this.params?.isSsr,
   });
 
   private readonly phaseAutoFetchable = autoFetchable({
     getFetch: () => fetchPhase,
     getDeps: () => [] as const,
-    isSsr: this.isSsr,
+    isSsr: this.params?.isSsr,
   });
 
   private readonly supplyAutoFetchable = autoFetchable({
     getFetch: () => fetchSupply,
     getDeps: () => this.phase.value && ([this.phase.value] as const),
-    isSsr: this.isSsr,
+    isSsr: this.params?.isSsr,
   });
 
   // private readonly priceAutoFetchable = autoFetchable({

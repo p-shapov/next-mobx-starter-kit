@@ -12,7 +12,7 @@ export type Props = {
 
 export const Home: NextPageWithLayout<Props> = observer((data) => {
   const publicSaleModel = useMemo(() => {
-    const model = new PublicSaleModel(true);
+    const model = new PublicSaleModel({ isSsr: true });
     model.hydrate(data);
     return model;
   }, [data]);
