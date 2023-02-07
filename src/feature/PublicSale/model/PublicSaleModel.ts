@@ -35,26 +35,26 @@ export class PublicSaleModel implements IPublicSaleModel {
     return this.phaseAutoFetchable.data;
   }
 
-  updatePhase(phase: 'Soon' | 'Started' | 'Finished') {
-    this.phaseAutoFetchable.forceUpdate(phase);
-  }
-
   async mint(count: number) {
     // eslint-disable-next-line no-console
     console.log(count);
   }
 
-  readonly hydrate = (data: { price: number; supply: number; phase: 'Soon' | 'Started' | 'Finished' }) => {
+  updatePhase(phase: 'Soon' | 'Started' | 'Finished') {
+    this.phaseAutoFetchable.forceUpdate(phase);
+  }
+
+  hydrate(data: { price: number; supply: number; phase: 'Soon' | 'Started' | 'Finished' }) {
     this.priceAutoFetchable.hydrate(data.price);
     this.phaseAutoFetchable.hydrate(data.phase);
     this.supplyAutoFetchable.hydrate(data.supply);
-  };
+  }
 
-  readonly dehydrate = () => {
+  dehydrate() {
     this.priceAutoFetchable.dehydrate();
     this.phaseAutoFetchable.dehydrate();
     this.supplyAutoFetchable.dehydrate();
-  };
+  }
 
   constructor(private readonly params?: { isSsr?: boolean }) {
     makeObservable(this, {
@@ -62,6 +62,9 @@ export class PublicSaleModel implements IPublicSaleModel {
       supply: computed,
       phase: computed,
       mint: action.bound,
+      updatePhase: action.bound,
+      hydrate: action.bound,
+      dehydrate: action.bound,
     });
 
     // makeObservable(this, {
