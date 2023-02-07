@@ -1,8 +1,9 @@
 import { observer } from 'mobx-react-lite';
-import { useMemo } from 'react';
 import Link from 'next/link';
 
 import { PublicSaleForm, PublicSaleFormVM, PublicSaleModel } from 'feature/PublicSale';
+
+import { useHydrateStore } from 'shared/hooks/useHydrateStore';
 
 export type Props = {
   phase: 'Soon' | 'Started' | 'Finished';
@@ -10,13 +11,11 @@ export type Props = {
   supply: number;
 };
 
+const publicSaleModel = new PublicSaleModel({ isSsr: true });
+const publicSaleFormVM = new PublicSaleFormVM(publicSaleModel);
+
 export const Home: NextPageWithLayout<Props> = observer((data) => {
-  const publicSaleModel = useMemo(() => {
-    const model = new PublicSaleModel({ isSsr: true });
-    model.hydrate(data);
-    return model;
-  }, [data]);
-  const publicSaleFormVM = useMemo(() => new PublicSaleFormVM(publicSaleModel), [publicSaleModel]);
+  useHydrateStore(data, publicSaleModel);
 
   return (
     <div>
