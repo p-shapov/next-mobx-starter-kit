@@ -53,6 +53,16 @@ export class PublicSaleModel implements IPublicSaleModel {
       phase: computed,
       mint: action.bound,
     });
+
+    // makeObservable(this, {
+    //   price: computed,
+    //   supply: computed,
+    //   phase: computed,
+    //   mint: action.bound,
+    //   fetchPrice: computed,
+    //   fetchPhase: computed,
+    //   fetchSupply: computed,
+    // });
   }
 
   private readonly priceAutoFetchable = autoFetchable({
@@ -69,7 +79,37 @@ export class PublicSaleModel implements IPublicSaleModel {
 
   private readonly supplyAutoFetchable = autoFetchable({
     getFetch: () => fetchSupply,
-    getDeps: () => (this.phase.value ? ([this.phase.value] as const) : null),
+    getDeps: () => this.phase.value && ([this.phase.value] as const),
     isSsr: this.isSsr,
   });
+
+  // private readonly priceAutoFetchable = autoFetchable({
+  //   getFetch: () => this.fetchPrice,
+  //   getDeps: () => [] as const,
+  //   isSsr: this.isSsr,
+  // });
+
+  // private readonly phaseAutoFetchable = autoFetchable({
+  //   getFetch: () => this.fetchPhase,
+  //   getDeps: () => [] as const,
+  //   isSsr: this.isSsr,
+  // });
+
+  // private readonly supplyAutoFetchable = autoFetchable({
+  //   getFetch: () => this.fetchSupply,
+  //   getDeps: () => [] as const,
+  //   isSsr: this.isSsr,
+  // });
+
+  // private get fetchPrice() {
+  //   return fetchPrice;
+  // }
+
+  // private get fetchPhase() {
+  //   return fetchPhase;
+  // }
+
+  // private get fetchSupply() {
+  //   return this.phase.value && fetchSupply.bind(null, this.phase.value);
+  // }
 }
