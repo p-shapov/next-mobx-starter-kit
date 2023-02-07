@@ -1,11 +1,16 @@
-import { useEffect, useState } from 'react';
+import { runInAction } from 'mobx';
+import { useEffect } from 'react';
+
+import { useObservableBox } from './useObservableBox';
 
 export const useWindowScrollPosition = () => {
-  const [position, setPosition] = useState(0);
+  const position$ = useObservableBox(0);
 
   useEffect(() => {
     const updatePosition = () => {
-      setPosition(window.scrollY);
+      runInAction(() => {
+        position$.set(window.scrollY);
+      });
     };
 
     updatePosition();
@@ -15,7 +20,7 @@ export const useWindowScrollPosition = () => {
     return () => {
       window.removeEventListener('scroll', updatePosition);
     };
-  }, []);
+  }, [position$]);
 
-  return position;
+  return () => position$.get();
 };

@@ -1,33 +1,38 @@
-import { createContext, FC, ReactNode, useContext, useEffect, useId, useState } from 'react';
+import { runInAction } from 'mobx';
+import { useLocalObservable } from 'mobx-react-lite';
+import { createContext, FC, ReactNode, useContext, useEffect, useId } from 'react';
 
 const DisableWindowScrollContext = createContext<{
+  stack: Array<string>;
   stackDepth: number;
   push: (id: string) => void;
   pop: (id: string) => void;
 } | null>(null);
 
 export const DisableWindowScrollProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [stack, setStack] = useState<Array<string>>([]);
+  const store = useLocalObservable<{
+    stack: Array<string>;
+    stackDepth: number;
+    push: (id: string) => void;
+    pop: (id: string) => void;
+  }>(() => ({
+    stack: [],
+    get stackDepth(): number {
+      return store.stack.length;
+    },
+    push(id: string) {
+      runInAction(() => {
+        store.stack.push(id);
+      });
+    },
+    pop(id: string) {
+      runInAction(() => {
+        store.stack = store.stack.filter((x) => x !== id);
+      });
+    },
+  }));
 
-  const push = (id: string) => {
-    setStack((arr) => [id, ...arr]);
-  };
-
-  const pop = (id: string) => {
-    setStack((arr) => arr.filter((x) => x !== id));
-  };
-
-  return (
-    <DisableWindowScrollContext.Provider
-      value={{
-        stackDepth: stack.length,
-        push,
-        pop,
-      }}
-    >
-      {children}
-    </DisableWindowScrollContext.Provider>
-  );
+  return <DisableWindowScrollContext.Provider value={store}>{children}</DisableWindowScrollContext.Provider>;
 };
 
 export const useDisableWindowScroll = (disabled: boolean) => {

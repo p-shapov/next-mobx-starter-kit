@@ -1,13 +1,13 @@
-import { createContext, FC, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, FC, ReactNode, useContext, useEffect, useMemo } from 'react';
 import UAParser from 'ua-parser-js';
+import { runInAction } from 'mobx';
+import { useLocalObservable } from 'mobx-react-lite';
 
 import screens from 'shared/styles/screens.module.scss';
 
 type DetectDeviceValue = {
   isMobile?: boolean;
   isDesktop?: boolean;
-  isMobileRender?: boolean;
-  isDesktopRender?: boolean;
 };
 
 export const DetectDeviceContext = createContext<null | DetectDeviceValue>(null);
@@ -17,13 +17,16 @@ export const DetectDeviceProvider: FC<{ uaString?: string; children: ReactNode }
   children,
 }) => {
   const uaParser = useMemo(() => (uaString ? new UAParser(uaString) : undefined), [uaString]);
+  const { type, os } = useMemo(
+    () => ({ type: uaParser?.getDevice().type, os: uaParser?.getOS().name }),
+    [uaParser],
+  );
+  const defaultIsMobile = type === 'mobile';
 
-  const deviceType = useMemo(() => uaParser?.getDevice().type, [uaParser]);
-
-  const defaultIsMobile = deviceType === 'mobile';
-
-  const [isMobile, setIsMobile] = useState(deviceType ? defaultIsMobile : undefined);
-  const [isDesktop, setIsDesktop] = useState(deviceType ? !defaultIsMobile : undefined);
+  const store = useLocalObservable(() => ({
+    isMobile: type ? defaultIsMobile : undefined,
+    isDesktop: type || os === 'Windows' ? !defaultIsMobile : undefined,
+  }));
 
   useEffect(() => {
     const detectDevice = () => {
@@ -31,31 +34,22 @@ export const DetectDeviceProvider: FC<{ uaString?: string; children: ReactNode }
       const isMobile = matchesScreenSM;
       const isDesktop = !matchesScreenSM;
 
-      setIsMobile(isMobile);
-      setIsDesktop(isDesktop);
+      runInAction(() => {
+        store.isMobile = isMobile;
+        store.isDesktop = isDesktop;
+      });
     };
 
-    detectDevice();
+    if (!store.isDesktop || !store.isMobile) detectDevice();
 
     window.addEventListener('resize', detectDevice);
 
     return () => {
       window.removeEventListener('resize', detectDevice);
     };
-  }, []);
+  }, [store]);
 
-  return (
-    <DetectDeviceContext.Provider
-      value={{
-        isMobile,
-        isDesktop,
-        isMobileRender: isMobile || typeof isMobile === 'undefined',
-        isDesktopRender: isDesktop || typeof isDesktop === 'undefined',
-      }}
-    >
-      {children}
-    </DetectDeviceContext.Provider>
-  );
+  return <DetectDeviceContext.Provider value={store}>{children}</DetectDeviceContext.Provider>;
 };
 
 export const useDetectDevice = () => {

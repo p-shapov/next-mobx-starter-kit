@@ -1,18 +1,20 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
+
+import { useObservableBox } from './useObservableBox';
 
 export const useDimensions = <T extends HTMLElement>() => {
   const ref = useRef<T | null>(null);
-  const [width, setWidth] = useState<number>();
-  const [height, setHeight] = useState<number>();
+  const width$ = useObservableBox<number>();
+  const height$ = useObservableBox<number>();
 
   useEffect(() => {
     const { current: element } = ref;
 
     if (element) {
-      setWidth(element.offsetWidth);
-      setHeight(element.offsetHeight);
+      width$.set(element.offsetWidth);
+      height$.set(element.offsetHeight);
     }
-  }, []);
+  }, [height$, width$]);
 
-  return [ref, width, height] as const;
+  return [ref, () => width$.get(), () => height$.get()] as const;
 };
