@@ -75,7 +75,7 @@ export class AutoFetchable<
       disposeListener = reaction(
         () => [this.getFetch(), this.getDeps()] as const,
         async ([fetch, args]) => {
-          if (fetch && args && ((!isServer && this.hydrated) || !this.isSsr)) {
+          if (fetch && args && !isServer && (this.hydrated || !this.isSsr)) {
             cancelFetch();
 
             this.data.status = 'Loading';
@@ -110,8 +110,6 @@ export class AutoFetchable<
     onBecomeUnobserved(this, 'data', () => {
       disposeListener();
       cancelFetch();
-
-      this.hydrated = false;
     });
   };
 }
