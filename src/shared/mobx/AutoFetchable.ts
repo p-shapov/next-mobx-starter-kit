@@ -17,9 +17,9 @@ import { isServer } from 'shared/utils/isServer';
 type FetchResult<T> = CancellablePromise<T> | Promise<T>;
 
 export const autoFetchable = <
-  T extends Parameters<NonNullable<Parameters<ReturnType<ReturnType<F1>>['then']>[0]>>[0],
-  F1 extends { (): (...args: Array<any>) => FetchResult<any> },
-  F2 extends { (): Readonly<Parameters<ReturnType<F1>>> | undefined | null },
+  T extends Parameters<NonNullable<Parameters<ReturnType<NonNullable<ReturnType<F1>>>['then']>[0]>>[0],
+  F1 extends { (): ((...args: Array<any>) => FetchResult<any>) | null },
+  F2 extends { (): Readonly<Parameters<NonNullable<ReturnType<F1>>>> | undefined | null },
 >({
   getFetch,
   isSsr,
@@ -33,9 +33,9 @@ export const autoFetchable = <
 };
 
 export class AutoFetchable<
-  T extends Parameters<NonNullable<Parameters<ReturnType<ReturnType<F1>>['then']>[0]>>[0],
-  F1 extends { (): (...args: Array<any>) => FetchResult<any> },
-  F2 extends { (): Readonly<Parameters<ReturnType<F1>>> | undefined | null },
+  T extends Parameters<NonNullable<Parameters<ReturnType<NonNullable<ReturnType<F1>>>['then']>[0]>>[0],
+  F1 extends { (): ((...args: Array<any>) => FetchResult<any>) | null },
+  F2 extends { (): Readonly<Parameters<NonNullable<ReturnType<F1>>>> | undefined | null },
 > {
   public data = fetchData<T, null>(null);
 
@@ -71,7 +71,7 @@ export class AutoFetchable<
       disposeListener = reaction(
         () => [this.getFetch(), this.getDeps()] as const,
         async ([fetch, args]) => {
-          if (args && ((!isServer && this.hydrated) || !this.isSsr)) {
+          if (fetch && args && ((!isServer && this.hydrated) || !this.isSsr)) {
             cancelFetch();
 
             this.data.status = 'Loading';
