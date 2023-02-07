@@ -52,6 +52,10 @@ export class AutoFetchable<
     }
   };
 
+  public readonly dehydrate = () => {
+    this.hydrated = false;
+  };
+
   constructor(private readonly getFetch: F1, private readonly getDeps: F2, private readonly isSsr?: boolean) {
     makeObservable(this, {
       data: observable,
@@ -106,6 +110,8 @@ export class AutoFetchable<
     onBecomeUnobserved(this, 'data', () => {
       disposeListener();
       cancelFetch();
+
+      this.hydrated = false;
     });
   };
 }
