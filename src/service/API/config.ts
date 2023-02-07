@@ -1,5 +1,7 @@
 import { AxiosRequestConfig } from 'axios';
 
+import { Env } from 'shared/constants';
+
 export const axiosConfig: AxiosRequestConfig = {
-  baseURL: process.env.BASE_URL,
+  baseURL: Env.API_URL,
 };

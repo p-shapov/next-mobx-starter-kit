@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "tsm": "typed-scss-modules src/**/*.module.scss -n none -e default -d @import'./src/shared/styles/index.scss'; -u",
-    "dev": "concurrently \"yarn tsm -w\" \"next dev\"",
-    "build": "yarn tsm && next build",
-    "start": "concurrently \"yarn tsm -w\" \"next start\"",
-    "lint": "next lint"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "stylelint": "stylelint --config .stylelintrc \"./**/*.scss\"",
+    "stylelint:fix": "stylelint --fix --config .stylelintrc \"./**/*.scss\""
   },
   "dependencies": {
     "axios": "^0.27.2",
@@ -21,6 +23,8 @@
     "ua-parser-js": "^1.0.33"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.1.2",
+    "@commitlint/config-conventional": "^17.1.0",
     "@types/node": "18.7.14",
     "@types/react": "18.0.18",
     "@types/react-dom": "18.0.6",
@@ -32,9 +36,18 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.1",
     "prettier": "2.7.1",
     "sass": "^1.54.8",
     "typed-scss-modules": "^6.5.0",
-    "typescript": "4.8.2"
+    "typescript": "4.8.2",
+    "stylelint": "^14.13.0",
+    "stylelint-config-css-modules": "^4.1.0",
+    "stylelint-config-prettier": "^9.0.3",
+    "stylelint-config-sass-guidelines": "^9.0.1",
+    "stylelint-config-standard": "^28.0.0",
+    "stylelint-declaration-block-no-ignored-properties": "^2.5.0",
+    "stylelint-prettier": "^2.0.0",
+    "stylelint-scss": "^4.3.0"
   }
 }
