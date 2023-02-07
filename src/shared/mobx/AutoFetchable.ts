@@ -37,29 +37,29 @@ export class AutoFetchable<
   F1 extends { (): ((...args: Array<any>) => FetchResult<any>) | null },
   F2 extends { (): Readonly<Parameters<NonNullable<ReturnType<F1>>>> | undefined | null },
 > {
-  public data = fetchData<T, null>(null);
+  readonly data = fetchData<T, null>(null);
 
-  public forceUpdate(value: T) {
-    runInAction(() => {
-      this.data.status = 'Succeed';
-      this.data.value = value;
-    });
+  forceUpdate(value: T) {
+    this.data.status = 'Succeed';
+    this.data.value = value;
   }
 
-  public readonly hydrate = (value: T) => {
+  hydrate(value: T) {
     if (this.isSsr) {
       if (!this.hydrated) this.forceUpdate(value);
     }
-  };
+  }
 
-  public readonly dehydrate = () => {
+  dehydrate() {
     this.hydrated = false;
-  };
+  }
 
   constructor(private readonly getFetch: F1, private readonly getDeps: F2, private readonly isSsr?: boolean) {
     makeObservable(this, {
       data: observable,
       forceUpdate: action.bound,
+      hydrate: action.bound,
+      dehydrate: action.bound,
     });
 
     this.runAutoFetcher();
