@@ -17,12 +17,14 @@
     "next": "12.2.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "the-new-css-reset": "^1.7.3"
+    "the-new-css-reset": "^1.7.3",
+    "ua-parser-js": "^1.0.33"
   },
   "devDependencies": {
     "@types/node": "18.7.14",
     "@types/react": "18.0.18",
     "@types/react-dom": "18.0.6",
+    "@types/ua-parser-js": "^0.7.36",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "concurrently": "^7.3.0",
     "eslint": "8.23.0",
