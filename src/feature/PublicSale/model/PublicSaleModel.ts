@@ -35,22 +35,22 @@ export class PublicSaleModel implements IPublicSaleModel {
     return this.phaseAutoFetchable.data;
   }
 
+  updatePhase(phase: 'Soon' | 'Started' | 'Finished') {
+    this.phaseAutoFetchable.forceUpdate(phase);
+  }
+
   async mint(count: number) {
     // eslint-disable-next-line no-console
     console.log(count);
   }
 
-  public readonly hydrate = (data: {
-    price: number;
-    supply: number;
-    phase: 'Soon' | 'Started' | 'Finished';
-  }) => {
+  readonly hydrate = (data: { price: number; supply: number; phase: 'Soon' | 'Started' | 'Finished' }) => {
     this.priceAutoFetchable.hydrate(data.price);
     this.phaseAutoFetchable.hydrate(data.phase);
     this.supplyAutoFetchable.hydrate(data.supply);
   };
 
-  public readonly dehydrate = () => {
+  readonly dehydrate = () => {
     this.priceAutoFetchable.dehydrate();
     this.phaseAutoFetchable.dehydrate();
     this.supplyAutoFetchable.dehydrate();
