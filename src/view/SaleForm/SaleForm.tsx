@@ -23,7 +23,7 @@ export const SaleForm: FC<SaleFormProps> = observer(({ vm }) => {
         </button>
       </div>
 
-      <div>Phase: {vm.phase.data.status !== 'Succeed' ? vm.phase.data.status : vm.supply.data.value}</div>
+      <div>Phase: {vm.phase.data.status !== 'Succeed' ? vm.phase.data.status : vm.phase.data.value}</div>
       <div>Price: {vm.price.data.status !== 'Succeed' ? vm.price.data.status : vm.price.data.value}</div>
       <div>
         Total price:{' '}
