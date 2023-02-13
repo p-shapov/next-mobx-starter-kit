@@ -1,4 +1,4 @@
-import { flow, makeObservable } from 'mobx';
+import { flow } from 'mobx';
 import { Service } from 'typedi';
 
 import { GetDataPoint } from 'lib/mobx';
@@ -22,6 +22,5 @@ const fetchPhase = flow(function* (echo: unknown) {
 export class PrivateSalePhaseDP extends GetDataPoint<SalePhase, [unknown]> implements ISalePhaseDP {
   constructor() {
     super({ getFetch: () => fetchPhase, getDeps: () => null });
-    makeObservable(this);
   }
 }

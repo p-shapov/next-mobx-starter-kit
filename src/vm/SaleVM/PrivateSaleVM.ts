@@ -1,4 +1,3 @@
-import { makeObservable } from 'mobx';
 import { Inject, Service } from 'typedi';
 
 import * as SalePhaseDP from 'dp/SalePhaseDP';
@@ -18,7 +17,6 @@ export class PrivateSaleVM extends SaleVM {
     @Inject(SaleSupplyDP.IoCTypes.IPrivateSaleSupplyDP) public supply: SalePriceDP.ISalePriceDP,
   ) {
     super();
-    makeObservable(this);
 
     this.phase.injectDeps(() => [this.amount.value]);
     this.mint.injectDeps(() => [this.amount.value]);

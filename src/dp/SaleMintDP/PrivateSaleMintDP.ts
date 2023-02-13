@@ -1,4 +1,4 @@
-import { flow, makeObservable } from 'mobx';
+import { flow } from 'mobx';
 import { Service } from 'typedi';
 
 import { sleep } from 'lib/utils';
@@ -21,6 +21,5 @@ export class PrivateSaleMintDP extends PostDataPoint<void, [number]> implements 
       getFetch: () => fetchMint,
       getDeps: () => null,
     });
-    makeObservable(this);
   }
 }
