@@ -20,8 +20,7 @@ export abstract class GetDataPoint<T, D extends Array<unknown>> {
 
   constructor(private readonly params: AutoFetchableParameters<T, D>) {
     makeObservable(this);
-    this.getDeps = params.getDeps;
   }
 
-  @observable protected getDeps: AutoFetchableParameters<T, D>['getDeps'] = () => null;
+  @observable protected getDeps = this.params.getDeps;
 }

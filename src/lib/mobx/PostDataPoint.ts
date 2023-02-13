@@ -41,5 +41,5 @@ export class PostDataPoint<T, D extends Array<unknown>> {
     makeObservable(this);
   }
 
-  @observable protected getDeps: () => D | null | undefined = () => null;
+  @observable protected getDeps = this.params.getDeps;
 }
