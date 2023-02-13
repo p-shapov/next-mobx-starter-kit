@@ -13,7 +13,7 @@ import { fetchData, getErrorMessage, isServer } from 'lib/utils';
 import { CancellableOrPromise } from 'lib/types/common';
 
 export type AutoFetchableParameters<T, D extends Array<unknown>> = {
-  readonly getFetch: { (): ((...args: D) => CancellableOrPromise<T>) | null };
+  readonly getFetch: { (): ((...args: [...D, AbortSignal]) => CancellableOrPromise<T>) | null };
   readonly getDeps: { (): D | undefined | null };
   readonly initial?: T;
 };
@@ -41,10 +41,21 @@ export class AutoFetchable<T, D extends Array<unknown>> {
     const fetch = this.params.getFetch();
 
     if (fetch) {
+      const abortController = new AbortController();
+
+      this.cancelFetch();
+
       this.data.status = 'Loading';
 
       try {
-        const data = await fetch(...args);
+        const awaitedData = fetch(...args, abortController.signal);
+
+        this.cancelFetch = () => {
+          if ('cancel' in awaitedData) awaitedData.cancel();
+          abortController.abort();
+        };
+
+        const data = await awaitedData;
 
         runInAction(() => {
           this.data.status = 'Succeed';
@@ -60,22 +71,24 @@ export class AutoFetchable<T, D extends Array<unknown>> {
   }
 
   __runAutoFetcher__() {
-    let disposeListener: () => void = () => void 0;
-    let cancelFetch: () => void = () => void 0;
-
     onBecomeObserved(this, 'data', () => {
-      disposeListener = reaction(
+      this.disposeListener = reaction(
         () => [this.params.getFetch(), this.params.getDeps()] as const,
         async ([fetch, args]) => {
           if (fetch && args) {
-            cancelFetch();
+            const abortController = new AbortController();
+
+            this.cancelFetch();
 
             this.data.status = 'Loading';
 
             try {
-              const awaitedData = fetch(...args);
+              const awaitedData = fetch(...args, abortController.signal);
 
-              if ('cancel' in awaitedData) cancelFetch = awaitedData.cancel;
+              this.cancelFetch = () => {
+                if ('cancel' in awaitedData) awaitedData.cancel();
+                abortController.abort();
+              };
 
               const data = await awaitedData;
 
@@ -98,8 +111,11 @@ export class AutoFetchable<T, D extends Array<unknown>> {
     });
 
     onBecomeUnobserved(this, 'data', () => {
-      disposeListener();
-      cancelFetch();
+      this.disposeListener();
+      this.cancelFetch();
     });
   }
+
+  private disposeListener: () => void = () => void 0;
+  private cancelFetch: () => void = () => void 0;
 }

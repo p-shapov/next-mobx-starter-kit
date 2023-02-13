@@ -12,14 +12,19 @@ export class PostDataPoint<T, D extends Array<unknown>> {
     const args = this.getDeps();
 
     if (fetch && args) {
+      const abortController = new AbortController();
+
       this.cancelFetch();
 
       this.data.status = 'Loading';
 
       try {
-        const awaitedData = fetch(...args);
+        const awaitedData = fetch(...args, abortController.signal);
 
-        if ('cancel' in awaitedData) this.cancelFetch = awaitedData.cancel;
+        this.cancelFetch = () => {
+          if ('cancel' in awaitedData) awaitedData.cancel();
+          abortController.abort();
+        };
 
         const data = await awaitedData;
 
@@ -45,7 +50,7 @@ export class PostDataPoint<T, D extends Array<unknown>> {
 
   constructor(
     private readonly params: {
-      getFetch(): ((...args: D) => CancellableOrPromise<T>) | null | undefined;
+      getFetch(): ((...args: [...D, AbortSignal]) => CancellableOrPromise<T>) | null | undefined;
       getDeps(): D | null | undefined;
     },
   ) {
