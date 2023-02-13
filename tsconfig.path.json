@@ -2,10 +2,16 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "feature/*": ["src/feature/*"],
-      "module/*": ["src/module/*"],
+      "lib/*": ["src/lib/*"],
       "service/*": ["src/service/*"],
-      "shared/*": ["src/shared/*"]
+      "dp/*": ["src/dp/*"],
+      "dp": ["src/dp/"],
+      "vm/*": ["src/vm/*"],
+      "vm": ["src/vm/"],
+      "view/*": ["src/view/*"],
+      "view": ["src/view/"],
+      "module/*": ["src/module/*"],
+      "core/*": ["src/core/*"]
     }
   }
 }

@@ -17,7 +17,8 @@
     "noEmit": true,
     "jsx": "preserve",
     "incremental": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["pages", "src", "next-env.d.ts", "types"],
   "exclude": ["node_modules"]

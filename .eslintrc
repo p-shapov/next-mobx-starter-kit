@@ -18,12 +18,7 @@
         "groups": ["builtin", "external", "internal", ["parent", "sibling", "index"]],
         "pathGroups": [
           {
-            "pattern": "feature/**",
-            "group": "parent",
-            "position": "before"
-          },
-          {
-            "pattern": "module/**",
+            "pattern": "lib/**",
             "group": "parent",
             "position": "before"
           },
@@ -33,7 +28,42 @@
             "position": "before"
           },
           {
-            "pattern": "shared/**",
+            "pattern": "dp/**",
+            "group": "parent",
+            "position": "before"
+          },
+          {
+            "pattern": "dp",
+            "group": "parent",
+            "position": "before"
+          },
+          {
+            "pattern": "vm/**",
+            "group": "parent",
+            "position": "before"
+          },
+          {
+            "pattern": "vm",
+            "group": "parent",
+            "position": "before"
+          },
+          {
+            "pattern": "view/**",
+            "group": "parent",
+            "position": "before"
+          },
+          {
+            "pattern": "view",
+            "group": "parent",
+            "position": "before"
+          },
+          {
+            "pattern": "module/**",
+            "group": "parent",
+            "position": "before"
+          },
+          {
+            "pattern": "core/**",
             "group": "parent",
             "position": "before"
           }

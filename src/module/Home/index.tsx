@@ -1,37 +1,23 @@
 import { observer } from 'mobx-react-lite';
 import Link from 'next/link';
 
-import { PublicSaleForm, PublicSaleFormVM, PublicSaleModel } from 'feature/PublicSale';
+import { ClientOnly } from 'lib/components';
+import { inject } from 'lib/hocs/inject';
 
-import { useHydrateStore } from 'shared/hooks/useHydrateStore';
+import * as SaleVM from 'vm/SaleVM';
 
-export type Props = {
-  phase: 'Soon' | 'Started' | 'Finished';
-  price: number;
-  supply: number;
-};
+import { SaleForm } from 'view/SaleForm';
 
-const publicSaleModel = new PublicSaleModel({ isSsr: true });
-const publicSaleFormVM = new PublicSaleFormVM(publicSaleModel);
+const PublicSaleForm = inject(SaleForm)({
+  vm: SaleVM.IoCTypes.IPublicSaleVM,
+});
 
-export const Home: NextPageWithLayout<Props> = observer((data) => {
-  useHydrateStore(data, publicSaleModel);
-
+export const Home: NextPageWithLayout = observer(() => {
   return (
     <div>
-      <PublicSaleForm vm={publicSaleFormVM} />
-
-      <div>{publicSaleFormVM.json}</div>
-
-      <button
-        onClick={() => {
-          const rand = Math.floor(Math.random() * 3);
-
-          publicSaleModel.updatePhase(['Soon' as const, 'Started' as const, 'Finished' as const][rand]);
-        }}
-      >
-        update
-      </button>
+      <ClientOnly>
+        <PublicSaleForm />
+      </ClientOnly>
 
       <Link href="/test/Soon">Soon</Link>
       <Link href="/test/Started">Started</Link>
