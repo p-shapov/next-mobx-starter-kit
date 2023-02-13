@@ -21,8 +21,10 @@ export class PostDataPoint<T, D extends Array<unknown>> {
           this.data.value = data;
         });
       } catch (error) {
-        this.data.status = 'Error';
-        this.data.error = getErrorMessage(error);
+        runInAction(() => {
+          this.data.status = 'Error';
+          this.data.error = getErrorMessage(error);
+        });
       }
     }
   }
