@@ -8,8 +8,8 @@ import { api } from 'service/API/core';
 import { type ISaleSupplyDP } from './Interface';
 import { IoCTypes } from './IoCTypes';
 
-const fetchSupply = flow(function* () {
-  const result: number = yield api.get('/supply/').then((res) => res.data);
+const fetchSupply = flow(function* (signal: AbortSignal) {
+  const result: number = yield api.get('/supply/', { signal }).then((res) => res.data);
 
   return result;
 });

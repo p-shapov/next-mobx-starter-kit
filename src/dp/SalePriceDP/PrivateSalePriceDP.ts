@@ -8,8 +8,8 @@ import { api } from 'service/API/core';
 import { type ISalePriceDP } from './Interface';
 import { IoCTypes } from './IoCTypes';
 
-const fetchPrice = flow(function* () {
-  const result: number = yield api.get('/price/').then((res) => res.data);
+const fetchPrice = flow(function* (signal: AbortSignal) {
+  const result: number = yield api.get('/price/', { signal }).then((res) => res.data);
 
   return result;
 });

@@ -62,6 +62,8 @@ export class AutoFetchable<T, D extends Array<unknown>> {
           this.data.value = data;
         });
       } catch (error) {
+        if (error instanceof FlowCancellationError) return;
+
         runInAction(() => {
           this.data.status = 'Error';
           this.data.error = getErrorMessage(error);

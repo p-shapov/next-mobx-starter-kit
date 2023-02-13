@@ -44,6 +44,11 @@ export class PostDataPoint<T, D extends Array<unknown>> {
   }
 
   @action.bound
+  public abort() {
+    if (this.data.status === 'Loading') this.cancelFetch();
+  }
+
+  @action.bound
   injectDeps(getDeps: () => D) {
     this.getDeps = getDeps;
   }

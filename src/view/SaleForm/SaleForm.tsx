@@ -29,6 +29,7 @@ export const SaleForm: FC<SaleFormProps> = observer(({ vm }) => {
         Total price:{' '}
         {vm.totalPrice.data.status !== 'Succeed' ? vm.totalPrice.data.status : vm.totalPrice.data.value}
       </div>
+      <div>Error: {vm.phase.data.error}</div>
 
       <button type="submit">Mint {vm.mint.data.status}</button>
     </form>

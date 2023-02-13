@@ -1,4 +1,4 @@
-import { CancellablePromise } from 'mobx/dist/internal';
+import { type CancellablePromise } from 'mobx/dist/internal';
 
 export type Status = 'Idle' | 'Loading' | 'Succeed' | 'Error';
 
