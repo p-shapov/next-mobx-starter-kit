@@ -1,3 +1,5 @@
+import { CancellablePromise } from 'mobx/dist/internal';
+
 export type Status = 'Idle' | 'Loading' | 'Succeed' | 'Error';
 
 export type SalePhase = 'Soon' | 'Started' | 'Finished';
@@ -7,3 +9,5 @@ export type FetchData<T> = {
   value: T | null;
   error: string | null;
 };
+
+export type CancellableOrPromise<T> = CancellablePromise<T> | Promise<T>;

@@ -6,15 +6,14 @@ import {
   makeObservable,
   observable,
   action,
+  FlowCancellationError,
 } from 'mobx';
-import { type CancellablePromise } from 'mobx/dist/internal';
 
 import { fetchData, getErrorMessage, isServer } from 'lib/utils';
-
-type FetchResult<T> = CancellablePromise<T> | Promise<T>;
+import { CancellableOrPromise } from 'lib/types/common';
 
 export type AutoFetchableParameters<T, D extends Array<unknown>> = {
-  readonly getFetch: { (): ((...args: D) => FetchResult<T>) | null };
+  readonly getFetch: { (): ((...args: D) => CancellableOrPromise<T>) | null };
   readonly getDeps: { (): D | undefined | null };
   readonly initial?: T;
 };
@@ -85,6 +84,8 @@ export class AutoFetchable<T, D extends Array<unknown>> {
                 this.data.value = data;
               });
             } catch (error) {
+              if (error instanceof FlowCancellationError) return;
+
               runInAction(() => {
                 this.data.status = 'Error';
                 this.data.error = getErrorMessage(error);
