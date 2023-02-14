@@ -11,7 +11,7 @@ import { type ISalePhaseDP } from './Interface';
 import { IoCTypes } from './IoCTypes';
 
 const fetchPhase = flow(function* (echo: unknown, signal: AbortSignal) {
-  const result: SalePhase = yield api.get('/phase/', { signal }).then((res) => res.data);
+  const result: SalePhase = yield api.get('/phase', { signal }).then((res) => res.data);
 
   yield sleep(2000);
 

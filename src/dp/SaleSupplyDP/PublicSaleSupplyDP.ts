@@ -9,7 +9,7 @@ import { type ISaleSupplyDP } from './Interface';
 import { IoCTypes } from './IoCTypes';
 
 const fetchSupply = flow(function* (signal: AbortSignal) {
-  const result: number = yield api.get('/supply/', { signal }).then((res) => res.data);
+  const result: number = yield api.get('/supply', { signal }).then((res) => res.data);
 
   return result;
 });
