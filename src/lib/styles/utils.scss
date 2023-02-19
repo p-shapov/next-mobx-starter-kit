@@ -43,54 +43,92 @@
   border: 0;
 }
 
-@mixin media-desktop {
-  @media (max-width: $screen-desktop) {
+@mixin media-xl {
+  @media (max-width: $screen-xl) {
     @content;
   }
 }
 
-@mixin media-desktop-up {
-  @media (min-width: calc($screen-desktop + 1px)) {
+@mixin media-xl-up {
+  @media (min-width: calc($screen-xl + 1px)) {
     @content;
   }
 }
 
-@mixin media-tablet {
-  @media (max-width: $screen-tablet) {
+@mixin media-lg {
+  @media (max-width: $screen-lg) {
     @content;
   }
 }
 
-@mixin media-tablet-up {
-  @media (max-width: calc($screen-tablet + 1px)) {
+@mixin media-lg-up {
+  @media (min-width: calc($screen-lg + 1px)) {
     @content;
   }
 }
 
-@mixin media-mobile {
-  @media (max-width: $screen-mobile) {
+@mixin media-md {
+  @media (max-width: $screen-md) {
     @content;
   }
 }
 
-@mixin media-mobile-up {
-  @media (max-width: calc($screen-mobile + 1px)) {
+@mixin media-md-up {
+  @media (min-width: calc($screen-md + 1px)) {
     @content;
+  }
+}
+
+@mixin media-sm {
+  @media (max-width: $screen-sm) {
+    @content;
+  }
+}
+
+@mixin media-sm-up {
+  @media (min-width: calc($screen-sm + 1px)) {
+    @content;
+  }
+}
+
+@mixin media-reduced-motion($no-preference: true) {
+  @if ($no-preference) {
+    @media (prefers-reduced-motion: reduce) {
+      @content;
+    }
+  } @else {
+    @media (prefers-reduced-motion: no-preference) {
+      @content;
+    }
   }
 }
 
 @mixin container {
   width: 100%;
-  max-width: $container-max-width;
-  padding: 0 var(--container-x-paddings, #{$container-paddings-desktop});
   margin: 0 auto;
 
-  @include media-tablet {
-    --container-x-paddings: #{$container-paddings-tablet};
+  @include media-lg-up {
+    max-width: $container-max-width-xl;
+    padding: 0 $container-paddings-xl;
   }
 
-  @include media-mobile {
-    --container-x-paddings: #{$container-paddings-mobile};
+  @include media-lg {
+    @include media-md-up {
+      max-width: $container-max-width-lg;
+      padding: 0 $container-paddings-lg;
+    }
+  }
+
+  @include media-md {
+    @include media-sm-up {
+      max-width: $container-max-width-md;
+      padding: 0 $container-paddings-md;
+    }
+  }
+
+  @include media-sm {
+    max-width: $container-max-width-sm;
+    padding: 0 $container-paddings-sm;
   }
 }
 

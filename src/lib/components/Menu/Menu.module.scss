@@ -1,0 +1,52 @@
+.root {
+  position: relative;
+  z-index: 0;
+}
+
+.dialog {
+  z-index: -1;
+
+  width: max-content;
+
+  &:not([data-enter]) > .content {
+    @include media-reduced-motion(true) {
+      transition: opacity 500ms ease-in;
+    }
+
+    @include media-reduced-motion(false) {
+      transition: opacity 500ms ease-in, transform 500ms ease-in;
+    }
+  }
+
+  &[data-enter] > .content {
+    opacity: 1;
+
+    @include media-reduced-motion(true) {
+      transition: opacity 500ms ease-out;
+    }
+
+    @include media-reduced-motion(false) {
+      transition: opacity 500ms ease-out, transform 500ms ease-out;
+
+      transform: translateY(0);
+    }
+  }
+}
+
+.content {
+  display: grid;
+
+  padding: 4px;
+
+  background-color: $accent;
+  border-radius: 10px;
+  opacity: 0;
+
+  > *:focus-visible {
+    z-index: 1;
+  }
+
+  @include media-reduced-motion(false) {
+    transform: translateY(-50%);
+  }
+}

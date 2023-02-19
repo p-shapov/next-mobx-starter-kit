@@ -1,0 +1,126 @@
+.root {
+  padding-top: 17px;
+}
+
+.gradient {
+  position: fixed;
+  z-index: -1;
+
+  width: 100vw;
+  height: 100vh;
+
+  &--type_linear {
+    background: linear-gradient(90deg, #000 11.38%, #6f00fc 102.05%);
+  }
+
+  &--type_diagonal {
+    background-color: $bg-secondary;
+    background-image: linear-gradient(
+      to bottom,
+      $bg-primary 60.53%,
+      rgba(#09006d, 0.87) 99.8%
+    );
+
+    .diagonal {
+      display: grid;
+
+      width: 100vw;
+      max-width: $container-max-width-lg;
+      height: 100%;
+      margin: 0 auto;
+
+      &::after,
+      &::before {
+        background-color: $bg-primary;
+        background-image: linear-gradient(
+          to top,
+          rgba(#7000ff, 0.77) 13.35%,
+          rgba(#fa00ff, 0.15) 80%,
+          rgba(#fa00ff, 0) 100%
+        );
+      }
+
+      &::before {
+        $left-offset: calc(calc(100vw - 100%) / 2);
+
+        content: '';
+
+        position: relative;
+        left: calc($left-offset * -1);
+
+        grid-row: 1;
+        grid-column: 1;
+
+        width: $left-offset;
+        height: 100%;
+
+        pointer-events: none;
+      }
+
+      &::after {
+        content: '';
+
+        grid-row: 1;
+        grid-column: 1;
+
+        justify-self: center;
+
+        width: 100%;
+        height: 100%;
+
+        clip-path: polygon(0 0, 0 100%, 100% 0);
+
+        pointer-events: none;
+      }
+    }
+  }
+}
+
+.header {
+  @include container;
+
+  display: grid;
+
+  grid-auto-flow: column;
+
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  position: relative;
+
+  display: block;
+
+  width: 70px;
+  height: 70px;
+
+  > * {
+    position: absolute;
+  }
+}
+
+.links {
+  display: grid;
+
+  grid-auto-flow: column;
+
+  column-gap: 40px;
+
+  align-items: center;
+
+  nav,
+  ul {
+    display: contents;
+  }
+
+  li {
+    font-size: 1.8rem;
+    line-height: 2.2rem;
+    text-transform: uppercase;
+  }
+}
+
+.main {
+  @include container;
+}

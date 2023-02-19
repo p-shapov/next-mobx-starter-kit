@@ -11,3 +11,9 @@ export type FetchData<T> = {
 };
 
 export type CancellableOrPromise<T> = CancellablePromise<T> | Promise<T>;
+
+export type LinkItem = {
+  href: string;
+  text: string;
+  external?: boolean;
+};

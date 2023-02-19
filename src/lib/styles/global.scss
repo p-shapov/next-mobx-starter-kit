@@ -15,6 +15,13 @@ html * {
   font-size: 1.6rem;
 }
 
+body {
+  font-family: Montserrat, Arial, Helvetica, sans-serif;
+  color: $fg-primary;
+
+  background-color: $bg-primary;
+}
+
 label,
 button,
 select,
@@ -23,4 +30,9 @@ summary,
 [type='submit'],
 [type='checkbox'] {
   cursor: pointer;
+}
+
+*:focus-visible {
+  outline: 0.3rem dotted $fg-primary;
+  outline-offset: 0.5rem;
 }
