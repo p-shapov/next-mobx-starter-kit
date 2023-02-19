@@ -8,8 +8,7 @@
       "vm/*": ["src/vm/*"],
       "view/*": ["src/view/*"],
       "layout/*": ["src/layout/*"],
-      "module/*": ["src/module/*"],
-      "core/*": ["src/core/*"]
+      "module/*": ["src/module/*"]
     }
   }
 }

@@ -58,6 +58,11 @@
             "position": "before"
           },
           {
+            "pattern": "layout/**",
+            "group": "parent",
+            "position": "before"
+          },
+          {
             "pattern": "module/**",
             "group": "parent",
             "position": "before"
