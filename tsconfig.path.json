@@ -5,13 +5,10 @@
       "lib/*": ["src/lib/*"],
       "service/*": ["src/service/*"],
       "dp/*": ["src/dp/*"],
-      "dp": ["src/dp/"],
       "vm/*": ["src/vm/*"],
-      "vm": ["src/vm/"],
       "view/*": ["src/view/*"],
-      "view": ["src/view/"],
-      "module/*": ["src/module/*"],
-      "core/*": ["src/core/*"]
+      "layout/*": ["src/layout/*"],
+      "module/*": ["src/module/*"]
     }
   }
 }
