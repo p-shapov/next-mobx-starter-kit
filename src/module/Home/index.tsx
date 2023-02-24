@@ -5,14 +5,14 @@ import { ClientOnly } from 'lib/components';
 import { inject } from 'lib/hocs/inject';
 import { fetchData } from 'lib/utils';
 
-import * as SaleVM from 'vm/SaleVM';
+import { IoCSale } from 'vm/Sale';
 
 import { SaleForm } from 'view/SaleForm';
 
 import { BaseLayout } from 'layout/BaseLayout';
 
 const PublicSaleForm = inject(SaleForm)({
-  vm: SaleVM.IoCTypes.IPublicSaleVM,
+  vm: IoCSale.IPublicSale,
 });
 
 export const Home: NextPageWithLayout = observer(() => {

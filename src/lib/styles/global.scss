@@ -5,10 +5,11 @@ body,
 }
 
 html {
-  @media (prefers-reduced-motion: no-preference) {
+  font-size: 62.5%;
+
+  @include media-reduced-motion(false) {
     scroll-behavior: smooth;
   }
-  font-size: 62.5%;
 }
 
 html * {

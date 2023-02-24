@@ -28,12 +28,12 @@
             "position": "before"
           },
           {
-            "pattern": "dp/**",
+            "pattern": "action/**",
             "group": "parent",
             "position": "before"
           },
           {
-            "pattern": "dp",
+            "pattern": "datapoint/**",
             "group": "parent",
             "position": "before"
           },
@@ -43,17 +43,7 @@
             "position": "before"
           },
           {
-            "pattern": "vm",
-            "group": "parent",
-            "position": "before"
-          },
-          {
             "pattern": "view/**",
-            "group": "parent",
-            "position": "before"
-          },
-          {
-            "pattern": "view",
             "group": "parent",
             "position": "before"
           },

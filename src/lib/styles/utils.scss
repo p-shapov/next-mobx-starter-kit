@@ -22,10 +22,6 @@
   }
 }
 
-@mixin with-fallback($font-family: '') {
-  font-family: $font-family, Arial, Helvetica, sans-serif;
-}
-
 @mixin visually-hidden {
   position: absolute;
 

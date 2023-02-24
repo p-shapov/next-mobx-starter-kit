@@ -6,7 +6,7 @@ export type SalePhase = 'Soon' | 'Started' | 'Finished';
 
 export type FetchData<T> = {
   status: Status;
-  value: T | null;
+  value?: T;
   error: string | null;
 };
 

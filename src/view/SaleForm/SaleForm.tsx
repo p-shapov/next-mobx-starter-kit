@@ -3,10 +3,10 @@ import { FC } from 'react';
 
 import { withPreventDefault } from 'lib/utils/withPreventDefault';
 
-import { ISaleVM } from 'vm/SaleVM';
+import { ISale } from 'vm/Sale';
 
 export type SaleFormProps = {
-  vm: ISaleVM;
+  vm: ISale;
 };
 
 export const SaleForm: FC<SaleFormProps> = observer(({ vm }) => {
