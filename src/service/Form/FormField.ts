@@ -8,38 +8,7 @@ import {
   reaction,
 } from 'mobx';
 
-export abstract class Form {
-  readonly fields: Array<FormField> = [];
-
-  get record() {
-    return this.fields.reduce(
-      (acc, { name, value }) => ({ ...acc, [name]: value }),
-      {} as Record<string, string | number | boolean>,
-    );
-  }
-
-  get json() {
-    return JSON.stringify(this.record);
-  }
-
-  get isValid() {
-    return this.fields.every(({ isValid }) => isValid);
-  }
-
-  get isInvalid() {
-    return this.fields.every(({ isInvalid }) => isInvalid);
-  }
-
-  constructor() {
-    makeObservable(this, {
-      fields: observable,
-      record: computed,
-      json: computed,
-      isValid: computed,
-      isInvalid: computed,
-    });
-  }
-}
+import type { Form } from './Form';
 
 export class FormField<T = string | number | boolean> {
   name: string;
@@ -54,7 +23,7 @@ export class FormField<T = string | number | boolean> {
     return !this.error;
   }
 
-  readonly setValue = <D extends T>(valueOrSetter: D | ((prev: D) => D)) => {
+  setValue = <D extends T>(valueOrSetter: D | ((prev: D) => D)) => {
     if (typeof valueOrSetter !== 'function') {
       this.value = valueOrSetter;
     } else {

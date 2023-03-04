@@ -1,13 +1,16 @@
-import { type DataPoint, type FormField, type Form, type DataAction } from 'lib/mobx';
-import { type SalePhase } from 'lib/types/common';
+import type { SalePhase } from 'lib/types/common';
+
+import type { Form, FormField } from 'service/Form';
+import type { Datapoint } from 'service/Datapoint';
+import type { Action } from 'service/Action';
 
 export interface ISale extends Form {
-  readonly amount: FormField;
-  readonly mint: DataAction<void, [number]>;
-  readonly phase: DataPoint<SalePhase, []>;
-  readonly price: DataPoint<number, []>;
-  readonly supply: DataPoint<number, []>;
-  readonly totalPrice: DataPoint<number, []>;
+  amount: FormField<number>;
+  mint: Action<void, [number]>;
+  phase: Datapoint<SalePhase, []>;
+  price: Datapoint<number, []>;
+  supply: Datapoint<number, []>;
+  totalPrice: Datapoint<number, []>;
   increase(): void;
   decrease(): void;
 }

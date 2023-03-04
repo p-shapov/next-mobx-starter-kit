@@ -5,11 +5,14 @@ import { Button, ButtonLink, type ButtonProps, type ButtonLinkProps } from 'lib/
 
 import styles from './Menu.module.scss';
 
+type ButtonItem = Omit<ButtonProps, 'focusable' | 'type' | 'uppercase' | 'stretch' | 'icon'>;
+type ButtonLinkItem = Omit<ButtonLinkProps, 'icon' | 'focusable' | 'uppercase' | 'stretch'>;
+
 export type MenuProps = Omit<ButtonProps, 'onClick'> & {
   text: string;
   label?: string;
   title?: string;
-  items: Array<ButtonProps | ButtonLinkProps>;
+  items: Array<ButtonItem | ButtonLinkItem>;
 };
 
 export const Menu = forwardRef<HTMLButtonElement, MenuProps>(({ title, label, items, ...rest }, ref) => {

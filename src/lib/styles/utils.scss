@@ -87,8 +87,8 @@
   }
 }
 
-@mixin media-reduced-motion($no-preference: true) {
-  @if ($no-preference) {
+@mixin media-reduced-motion($prefers: true) {
+  @if ($prefers) {
     @media (prefers-reduced-motion: reduce) {
       @content;
     }

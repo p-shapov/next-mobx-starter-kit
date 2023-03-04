@@ -1,28 +1,26 @@
-import { FC, type ReactNode } from 'react';
-import Image from 'next/image';
+import type { ReactNode } from 'react';
+import NextImage from 'next/image';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
 
 import logo_svg from 'public/images/logo.svg';
 
 import { Button, Link, Menu } from 'lib/components';
-import { type FetchData } from 'lib/types/common';
 import { trim } from 'lib/utils';
+import { inject } from 'lib/hocs';
+
+import { Wallet } from 'service/Wallet';
 
 import styles from './BaseLayout.module.scss';
 import { headerNav, myNftsLink } from './constants';
 
-export type BaseLayoutProps = {
-  vm: {
-    address: FetchData<string>;
-    openConnectModal(): void;
-    disconnect(): void;
-  };
+type Props = {
+  wallet: Wallet;
   children: ReactNode;
   gradient?: 'diagonal' | 'linear';
 };
 
-export const BaseLayout: FC<BaseLayoutProps> = ({ vm, children, gradient = 'diagonal' }) => {
+const BaseLayout = inject(({ wallet, children, gradient = 'diagonal' }: Props) => {
   const { pathname } = useRouter();
 
   return (
@@ -35,7 +33,7 @@ export const BaseLayout: FC<BaseLayoutProps> = ({ vm, children, gradient = 'diag
         <header className={styles['header']}>
           <span className={styles['logo']}>
             <Link href="/" current={pathname === '/'}>
-              <Image src={logo_svg} alt="Metalamp" width={92} height={98} layout="fixed" priority />
+              <NextImage src={logo_svg} alt="Metalamp" width={92} height={98} layout="fixed" priority />
             </Link>
           </span>
 
@@ -52,18 +50,18 @@ export const BaseLayout: FC<BaseLayoutProps> = ({ vm, children, gradient = 'diag
               </ul>
             </nav>
 
-            {vm.address.value ? (
+            {wallet.address.value ? (
               <Menu
-                text={trim(vm.address.value, 5, 4)}
+                text={trim(wallet.address.value, 5, 4)}
                 label="open header menu"
                 title="header menu"
                 items={[
                   { ...myNftsLink, current: pathname === myNftsLink.href },
-                  { text: 'Disconnect', onClick: vm.disconnect },
+                  { text: 'Disconnect', onClick: wallet.disconnect },
                 ]}
               />
             ) : (
-              <Button text="Connect" onClick={vm.openConnectModal} uppercase />
+              <Button text="Connect" onClick={wallet.connect} uppercase />
             )}
           </div>
         </header>
@@ -72,4 +70,8 @@ export const BaseLayout: FC<BaseLayoutProps> = ({ vm, children, gradient = 'diag
       </div>
     </>
   );
-};
+})({
+  wallet: Wallet,
+});
+
+export { BaseLayout };

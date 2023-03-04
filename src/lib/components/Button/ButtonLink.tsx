@@ -12,7 +12,6 @@ export type ButtonLinkProps = LinkItem & {
   tabIndex?: number;
   stretch?: boolean;
   uppercase?: boolean;
-  loading?: boolean;
   current?: boolean;
   disabled?: boolean;
   focusable?: boolean;
@@ -20,7 +19,7 @@ export type ButtonLinkProps = LinkItem & {
 };
 
 export const ButtonLink = forwardRef<HTMLAnchorElement, ButtonLinkProps>(
-  ({ text, icon, stretch, uppercase, loading, ...rest }, ref) => {
+  ({ text, icon, stretch, uppercase, ...rest }, ref) => {
     return (
       <BaseButton
         {...rest}
@@ -30,7 +29,6 @@ export const ButtonLink = forwardRef<HTMLAnchorElement, ButtonLinkProps>(
           [styles['root--with-icon']]: !!icon,
           [styles['root--stretch']]: stretch,
           [styles['root--uppercase']]: uppercase,
-          [styles['root--loading']]: loading,
         })}
       >
         <span className={styles['text']}>{text}</span>

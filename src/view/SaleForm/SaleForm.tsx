@@ -5,11 +5,9 @@ import { withPreventDefault } from 'lib/utils/withPreventDefault';
 
 import { ISale } from 'vm/Sale';
 
-export type SaleFormProps = {
-  vm: ISale;
-};
+export type SaleFormProps = ISale;
 
-export const SaleForm: FC<SaleFormProps> = observer(({ vm }) => {
+export const SaleForm: FC<SaleFormProps> = observer((vm) => {
   return (
     <form onSubmit={withPreventDefault(vm.mint.send)}>
       <div>

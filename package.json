@@ -12,6 +12,9 @@
     "stylelint:fix": "stylelint --fix --config .stylelintrc \"./**/*.scss\""
   },
   "dependencies": {
+    "@web3-wallets-kit/connect-wallet-connector": "^0.3.9",
+    "@web3-wallets-kit/core": "^0.3.9",
+    "@web3-wallets-kit/inpage-connector": "^0.2.9",
     "axios": "^0.27.2",
     "classnames": "^2.3.1",
     "mobx": "^6.7.0",

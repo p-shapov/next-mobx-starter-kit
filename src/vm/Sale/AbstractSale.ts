@@ -1,27 +1,30 @@
-import { type DataPoint, type Action, FormField, Form, registerField, registerValidator } from 'lib/mobx';
 import { type SalePhase } from 'lib/types/common';
+
+import { FormField, Form, registerField, registerValidator } from 'service/Form';
+import type { Action } from 'service/Action';
+import type { Datapoint } from 'service/Datapoint';
 
 import { type ISale } from './Interface';
 
 const MIN_COUNT = 1;
 
-export abstract class Sale extends Form implements ISale {
-  abstract readonly mint: Action<void, [number]>;
+export abstract class AbstractSale extends Form implements ISale {
+  abstract mint: Action<void, [number]>;
 
-  abstract readonly price: DataPoint<number, []>;
-  abstract readonly phase: DataPoint<SalePhase, []>;
-  abstract readonly supply: DataPoint<number, []>;
-  abstract readonly totalPrice: DataPoint<number, []>;
+  abstract price: Datapoint<number, []>;
+  abstract phase: Datapoint<SalePhase, []>;
+  abstract supply: Datapoint<number, []>;
+  abstract totalPrice: Datapoint<number, []>;
 
   amount = new FormField('count', MIN_COUNT);
 
-  readonly increase = () => {
+  increase = () => {
     const supply = this.supply.data.value;
 
     if (typeof supply !== 'undefined') this.amount.setValue((prev) => Math.min(supply, prev + 1));
   };
 
-  readonly decrease = this.amount.setValue.bind(this.amount, (prev) => Math.max(MIN_COUNT, prev - 1));
+  decrease = this.amount.setValue.bind(this.amount, (prev) => Math.max(MIN_COUNT, prev - 1));
 
   constructor() {
     super();

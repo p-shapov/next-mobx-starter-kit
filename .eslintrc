@@ -28,16 +28,6 @@
             "position": "before"
           },
           {
-            "pattern": "action/**",
-            "group": "parent",
-            "position": "before"
-          },
-          {
-            "pattern": "datapoint/**",
-            "group": "parent",
-            "position": "before"
-          },
-          {
             "pattern": "vm/**",
             "group": "parent",
             "position": "before"

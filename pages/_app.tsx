@@ -1,11 +1,12 @@
 import 'reflect-metadata';
 import 'the-new-css-reset';
+import 'lib/styles/global.scss';
 
 import type { AppProps } from 'next/app';
 import { ReactElement } from 'react';
 
-import 'lib/styles/global.scss';
 import { DisableWindowScrollProvider, DetectDeviceProvider } from 'lib/hooks';
+import { NextPageWithLayout } from 'lib/types/common';
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;

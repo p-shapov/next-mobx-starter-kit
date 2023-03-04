@@ -33,7 +33,19 @@ summary,
   cursor: pointer;
 }
 
+*:not(:focus-visible) {
+  @include media-reduced-motion(true) {
+    outline-offset: 0.5rem;
+  }
+
+  @include media-reduced-motion(false) {
+    outline-offset: 0.1rem;
+  }
+}
+
 *:focus-visible {
   outline: 0.3rem dotted $fg-primary;
   outline-offset: 0.5rem;
+
+  transition: outline-offset 100ms ease-in-out;
 }

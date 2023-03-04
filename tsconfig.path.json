@@ -4,8 +4,6 @@
     "paths": {
       "lib/*": ["src/lib/*"],
       "service/*": ["src/service/*"],
-      "action/*": ["src/action/*"],
-      "datapoint/*": ["src/datapoint/*"],
       "vm/*": ["src/vm/*"],
       "view/*": ["src/view/*"],
       "layout/*": ["src/layout/*"],
