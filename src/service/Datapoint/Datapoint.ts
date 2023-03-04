@@ -162,12 +162,21 @@ export class Datapoint<T, D extends Array<unknown> = []> {
 
       if (polling) {
         const timer = setInterval(async () => {
+          const abortController = new AbortController();
+
+          this.cancelFetch();
+
           this.data.status = 'Loading';
 
           try {
             const awaitedData = fetch(...(deps as [...D, AbortSignal]));
 
             const data = await awaitedData;
+
+            this.cancelFetch = () => {
+              if ('cancel' in awaitedData) awaitedData.cancel();
+              abortController.abort();
+            };
 
             runInAction(() => {
               this.data.status = 'Succeed';

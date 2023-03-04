@@ -1,13 +1,11 @@
 import type { ReactNode } from 'react';
-import NextImage from 'next/image';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
-
-import logo_svg from 'public/images/logo.svg';
 
 import { Button, Link, Menu } from 'lib/components';
 import { trim } from 'lib/utils';
 import { inject } from 'lib/hocs';
+import { MetalampLogo_SVG } from 'lib/icons';
 
 import { Wallet } from 'service/Wallet';
 
@@ -33,7 +31,7 @@ const BaseLayout = inject(({ wallet, children, gradient = 'diagonal' }: Props) =
         <header className={styles['header']}>
           <span className={styles['logo']}>
             <Link href="/" current={pathname === '/'}>
-              <NextImage src={logo_svg} alt="Metalamp" width={92} height={98} layout="fixed" priority />
+              <MetalampLogo_SVG title="Metalamp logo" width={92} height={98} />
             </Link>
           </span>
 

@@ -10,16 +10,14 @@ export type LinkProps = {
 };
 
 export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
-  ({ children, href, current, external, ...rest }, ref) =>
+  ({ children, current, external, ...rest }, ref) =>
     external ? (
-      <a {...rest} ref={ref} href={href} rel="noreferrer noopener" target="_blank">
+      <a {...rest} ref={ref} rel="noreferrer noopener" target="_blank">
         {children}
       </a>
     ) : (
-      <NextLink href={href}>
-        <a {...rest} ref={ref} aria-current={current ? 'page' : 'false'}>
-          {children}
-        </a>
+      <NextLink {...rest} ref={ref} aria-current={current ? 'page' : 'false'}>
+        {children}
       </NextLink>
     ),
 );

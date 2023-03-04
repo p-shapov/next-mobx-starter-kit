@@ -18,9 +18,8 @@ export function InjectActionFactory<T, D extends Array<unknown>>({
       value: (container) => {
         class ActionFactory extends AbstractFactory<[() => D], Action<T, D>> {
           create(getDeps: () => D) {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return mkAction<T, D>({ ...params, getDeps });
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            return mkAction<T, D>({ ...params, getDeps } as any);
           }
         }
 
