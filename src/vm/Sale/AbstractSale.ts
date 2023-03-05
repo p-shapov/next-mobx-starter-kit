@@ -2,7 +2,7 @@ import { type SalePhase } from 'lib/types/common';
 
 import { FormField, Form, registerField, registerValidator } from 'service/Form';
 import type { Action } from 'service/Action';
-import type { Datapoint } from 'service/Datapoint';
+import type { Datapoint, MappedDatapoint } from 'service/Datapoint';
 
 import { type ISale } from './Interface';
 
@@ -14,7 +14,7 @@ export abstract class AbstractSale extends Form implements ISale {
   abstract price: Datapoint<number, []>;
   abstract phase: Datapoint<SalePhase, []>;
   abstract supply: Datapoint<number, []>;
-  abstract totalPrice: Datapoint<number, []>;
+  abstract totalPrice: MappedDatapoint<number, []>;
 
   amount = new FormField('count', MIN_COUNT);
 

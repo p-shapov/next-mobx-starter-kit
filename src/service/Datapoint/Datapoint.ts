@@ -7,7 +7,6 @@ import {
   observable,
   action,
   FlowCancellationError,
-  computed,
 } from 'mobx';
 
 import { fetchData, getErrorMessage, isServer } from 'lib/utils';
@@ -28,34 +27,15 @@ export type DatapointParameters<T, D extends Array<unknown> = []> = (D extends [
 export const mkDatapoint = <T, D extends Array<unknown> = []>(params: DatapointParameters<T, D>) => {
   return new Datapoint<T, D>(params);
 };
+
 export class Datapoint<T, D extends Array<unknown> = []> {
   data = fetchData<T>(this.params.initial);
 
-  map = <K>(f: (val: T) => K): Datapoint<K, D> => {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const self = this;
-
-    return makeObservable(
-      {
-        map: <U>(g: (val: K) => U) => {
-          return self.map((val: T) => g(f(val)));
-        },
-        get data() {
-          return {
-            ...self.data,
-            value: self.data.value && f(self.data.value),
-          };
-        },
-      },
-      {
-        data: computed,
-      },
-    ) as Datapoint<K, D>;
-  };
-
   set = (value: T) => {
-    this.data.status = 'Succeed';
-    this.data.value = value;
+    runInAction(() => {
+      this.data.status = 'Succeed';
+      this.data.value = value;
+    });
   };
 
   refetch = async (...deps: D) => {
@@ -117,7 +97,9 @@ export class Datapoint<T, D extends Array<unknown> = []> {
 
           this.cancelFetch();
 
-          this.data.status = 'Loading';
+          runInAction(() => {
+            this.data.status = 'Loading';
+          });
 
           try {
             const awaitedData = fetch(...deps, abortController.signal);
@@ -166,7 +148,9 @@ export class Datapoint<T, D extends Array<unknown> = []> {
 
           this.cancelFetch();
 
-          this.data.status = 'Loading';
+          runInAction(() => {
+            this.data.status = 'Loading';
+          });
 
           try {
             const awaitedData = fetch(...(deps as [...D, AbortSignal]));

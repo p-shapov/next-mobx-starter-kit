@@ -2,12 +2,15 @@ import { observer } from 'mobx-react-lite';
 import { FC } from 'react';
 
 import { withPreventDefault } from 'lib/utils/withPreventDefault';
+import { useLogger } from 'lib/hooks';
 
 import { ISale } from 'vm/Sale';
 
 export type SaleFormProps = ISale;
 
 export const SaleForm: FC<SaleFormProps> = observer((vm) => {
+  useLogger('dd', vm.totalPrice.data.status);
+
   return (
     <form onSubmit={withPreventDefault(vm.mint.send)}>
       <div>
