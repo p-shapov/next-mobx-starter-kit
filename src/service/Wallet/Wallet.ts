@@ -9,7 +9,7 @@ import { web3Client } from 'service/Web3';
 import { IWallet } from './Interface';
 
 @Service()
-export class Wallet implements IWallet {
+class Wallet implements IWallet {
   address = mkDatapoint<Address | undefined>({
     fetch: async () => web3Client.data?.account,
     $deps: () => [],
@@ -35,3 +35,5 @@ export class Wallet implements IWallet {
     web3Client.subscribe((state) => state.data?.account, this.address.set);
   }
 }
+
+export { Wallet };

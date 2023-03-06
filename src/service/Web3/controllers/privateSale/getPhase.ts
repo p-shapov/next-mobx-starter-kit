@@ -7,9 +7,9 @@ import { BimkonEyes } from 'assets/contracts';
 import { SalePhase } from 'lib/types/common';
 import { formatSalePhase } from 'lib/utils/converters';
 
-import { type DatapointController } from 'service/Datapoint';
+import type { DatapointController } from 'service/Datapoint/types';
 
-export const getPhase: DatapointController<SalePhase> = flow(function* () {
+const getPhase: DatapointController<SalePhase> = flow(function* () {
   const raw: number = yield readContract({
     ...BimkonEyes,
     functionName: 'whiteListSale',
@@ -19,3 +19,5 @@ export const getPhase: DatapointController<SalePhase> = flow(function* () {
 });
 
 getPhase.token = new Token();
+
+export { getPhase };

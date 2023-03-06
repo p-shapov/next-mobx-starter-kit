@@ -14,7 +14,7 @@ type WalletModalProps = Omit<ModalProps, 'children' | 'title'> & {
   connectWalletConnect: Action<void>;
 };
 
-export const WalletModal: FC<WalletModalProps> = observer(
+const WalletModal: FC<WalletModalProps> = observer(
   ({ connectMetamask, connectCoinbase, connectWalletConnect, state, ...rest }) => {
     const connectWallet = (name: 'metamask' | 'coinbase' | 'walletConnect') => async () => {
       switch (name) {
@@ -46,7 +46,7 @@ export const WalletModal: FC<WalletModalProps> = observer(
       <Modal
         {...rest}
         state={state}
-        hideOnInteractOutside={
+        outsideClickClose={
           connectMetamask.data.status !== 'Loading' && connectCoinbase.data.status !== 'Loading'
         }
         title="Connect wallet"
@@ -93,3 +93,5 @@ export const WalletModal: FC<WalletModalProps> = observer(
     );
   },
 );
+
+export { WalletModal };

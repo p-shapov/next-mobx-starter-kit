@@ -4,6 +4,4 @@ export * from './isServer';
 export * from './sleep';
 export * from './trim';
 export * from './clamp';
-export * from './getRestTime';
-export * from './parseTime';
 export * from './withPreventDefault';

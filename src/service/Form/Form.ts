@@ -2,7 +2,7 @@ import { computed, makeObservable, observable } from 'mobx';
 
 import type { FormField } from './FormField';
 
-export abstract class Form {
+abstract class Form {
   fields: Array<FormField> = [];
 
   get record() {
@@ -34,3 +34,5 @@ export abstract class Form {
     });
   }
 }
+
+export { Form };

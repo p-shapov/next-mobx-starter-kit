@@ -6,9 +6,9 @@ import { BimkonEyes } from 'assets/contracts';
 
 import { formatBigint } from 'lib/utils/converters';
 
-import { type DatapointController } from 'service/Datapoint';
+import type { DatapointController } from 'service/Datapoint/types';
 
-export const getPrice: DatapointController<number> = flow(function* () {
+const getPrice: DatapointController<number> = flow(function* () {
   const raw: bigint = yield readContract({
     ...BimkonEyes,
     functionName: 'whiteListSalePrice',
@@ -18,3 +18,5 @@ export const getPrice: DatapointController<number> = flow(function* () {
 });
 
 getPrice.token = new Token();
+
+export { getPrice };

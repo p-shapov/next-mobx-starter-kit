@@ -10,7 +10,7 @@ import {
 
 import type { Form } from './Form';
 
-export class FormField<T = string | number | boolean> {
+class FormField<T = string | number | boolean> {
   name: string;
   value: T;
   error: string | null;
@@ -67,3 +67,5 @@ export const registerValidator = <T>(field: FormField<T>, callback: ValidatorCal
   });
   onBecomeUnobserved(field, 'value', disposeListener);
 };
+
+export { FormField };

@@ -5,7 +5,6 @@ import 'assets/styles/global.scss';
 import type { AppProps } from 'next/app';
 import { ReactElement } from 'react';
 
-import { DisableWindowScrollProvider, DetectDeviceProvider } from 'lib/hooks';
 import { NextPageWithLayout } from 'lib/types/common';
 
 type AppPropsWithLayout = AppProps & {
@@ -15,13 +14,7 @@ type AppPropsWithLayout = AppProps & {
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page: ReactElement) => page);
 
-  return (
-    <DetectDeviceProvider uaString={pageProps.uaString}>
-      <DisableWindowScrollProvider>
-        {getLayout(<Component {...pageProps} />, pageProps)}
-      </DisableWindowScrollProvider>
-    </DetectDeviceProvider>
-  );
+  return getLayout(<Component {...pageProps} />, pageProps);
 }
 
 export default MyApp;

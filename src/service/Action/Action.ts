@@ -4,13 +4,13 @@ import { fetchData, getErrorMessage } from 'lib/utils';
 
 import { ActionParameters } from './types';
 
-export const mkAction = <T, D extends Array<unknown> = [], I extends boolean = false>(
+const mkAction = <T, D extends Array<unknown> = [], I extends boolean = false>(
   params: ActionParameters<T, D, I>,
 ) => {
   return new Action<T, D, I>(params);
 };
 
-export class Action<T, D extends Array<unknown> = [], I extends boolean = false> {
+class Action<T, D extends Array<unknown> = [], I extends boolean = false> {
   data = fetchData<T>();
 
   send = async (...args: I extends true ? D : []) => {
@@ -62,3 +62,5 @@ export class Action<T, D extends Array<unknown> = [], I extends boolean = false>
 
   private cancelFetch: () => void = () => void 0;
 }
+
+export { mkAction, type Action };

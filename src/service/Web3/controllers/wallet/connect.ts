@@ -2,7 +2,7 @@ import { connect, type ConnectResult } from '@wagmi/core';
 import { flow } from 'mobx';
 import { Token } from 'typedi';
 
-import { type ActionController } from 'service/Action';
+import type { ActionController } from 'service/Action/types';
 import { network, web3Connectors } from 'service/Web3/config';
 
 const connectMetamask: ActionController<ConnectResult> = flow(function* () {

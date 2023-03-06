@@ -13,13 +13,13 @@ import { fetchData, getErrorMessage, isServer } from 'lib/utils';
 
 import type { DatapointParameters } from './types';
 
-export const mkDatapoint = <T, D extends Array<unknown> = []>(
+const mkDatapoint = <T, D extends Array<unknown> = []>(
   params: DatapointParameters<T, D>,
 ): Datapoint<T, D> => {
   return new Datapoint<T, D>(params);
 };
 
-export class Datapoint<T, D extends Array<unknown> = []> {
+class Datapoint<T, D extends Array<unknown> = []> {
   data = fetchData<T>(this.params.initial);
 
   set = (value: T) => {
@@ -182,3 +182,5 @@ export class Datapoint<T, D extends Array<unknown> = []> {
   private disposeDepsListener: () => void = () => void 0;
   private cancelFetch: () => void = () => void 0;
 }
+
+export { mkDatapoint, type Datapoint };

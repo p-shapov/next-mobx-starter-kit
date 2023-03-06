@@ -99,28 +99,28 @@
     position: absolute;
   }
 
-  path:nth-child(3) {
-    @include media-reduced-motion(false) {
-      fill-opacity: 0;
+  > [aria-current='false'] path:nth-child(2) {
+    opacity: 0.3;
+  }
 
-      animation: light-on-anim 2s ease 500ms forwards;
-    }
+  path:nth-child(3) {
+    fill-opacity: 0;
+
+    animation: light-on-anim 2s ease 500ms forwards;
   }
 
   path:nth-child(1) {
-    @include media-reduced-motion(false) {
-      fill-opacity: 0;
+    fill-opacity: 0;
 
-      animation: light-on-anim 3s ease 500ms forwards;
-    }
+    animation: light-on-anim 3s ease 500ms forwards;
   }
 
   path:nth-child(2) {
-    @include media-reduced-motion(false) {
-      fill-opacity: 0;
+    fill-opacity: 0;
 
-      animation: light-on-anim 2s ease 1.8s forwards;
-    }
+    transition: opacity 1s ease-in-out;
+
+    animation: light-on-anim 2s ease 1.8s forwards;
   }
 }
 

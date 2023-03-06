@@ -6,9 +6,9 @@ import { BimkonEyes } from 'assets/contracts';
 
 import { formatBigint } from 'lib/utils/converters';
 
-import { type DatapointController } from 'service/Datapoint';
+import type { DatapointController } from 'service/Datapoint/types';
 
-export const getAllowedToMint: DatapointController<number, [Address]> = flow(function* (address: Address) {
+const getAllowedToMint: DatapointController<number, [Address]> = flow(function* (address: Address) {
   const raw: bigint = yield readContract({
     ...BimkonEyes,
     functionName: 'allowedToWhiteListMintAmount',
@@ -19,3 +19,5 @@ export const getAllowedToMint: DatapointController<number, [Address]> = flow(fun
 });
 
 getAllowedToMint.token = new Token();
+
+export { getAllowedToMint };
