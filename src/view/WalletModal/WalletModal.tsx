@@ -1,4 +1,3 @@
-import { type ConnectResult } from '@wagmi/core';
 import { FC } from 'react';
 import { observer } from 'mobx-react-lite';
 
@@ -10,9 +9,9 @@ import { type Action } from 'service/Action';
 import styles from './WalletModal.module.scss';
 
 type WalletModalProps = Omit<ModalProps, 'children' | 'title'> & {
-  connectMetamask: Action<ConnectResult, []>;
-  connectCoinbase: Action<ConnectResult, []>;
-  connectWalletConnect: Action<ConnectResult, []>;
+  connectMetamask: Action<void>;
+  connectCoinbase: Action<void>;
+  connectWalletConnect: Action<void>;
 };
 
 export const WalletModal: FC<WalletModalProps> = observer(

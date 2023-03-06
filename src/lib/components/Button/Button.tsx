@@ -14,7 +14,9 @@ type ButtonProps = {
   loading?: boolean;
   disabled?: boolean;
   focusable?: boolean;
+  autoFocus?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
+  onFocusVisible?(): void;
 };
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(

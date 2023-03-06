@@ -15,7 +15,9 @@ type ButtonLinkProps = LinkItem & {
   current?: boolean;
   disabled?: boolean;
   focusable?: boolean;
+  autoFocus?: boolean;
   onClick?: MouseEventHandler<HTMLAnchorElement>;
+  onFocusVisible?(): void;
 };
 
 const ButtonLink = forwardRef<HTMLAnchorElement, ButtonLinkProps>(

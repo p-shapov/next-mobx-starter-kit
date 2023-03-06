@@ -4,7 +4,8 @@ import { Token } from 'typedi';
 
 import { BimkonEyes } from 'assets/contracts';
 
-import { formatBigint } from 'service/API/formatters';
+import { formatBigint } from 'lib/utils/converters';
+
 import { type DatapointController } from 'service/Datapoint';
 
 export const getPrice: DatapointController<number> = flow(function* () {

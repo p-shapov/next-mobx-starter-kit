@@ -5,8 +5,8 @@ import { Token } from 'typedi';
 import { BimkonEyes } from 'assets/contracts';
 
 import { SalePhase } from 'lib/types/common';
+import { formatSalePhase } from 'lib/utils/converters';
 
-import { formatSalePhase } from 'service/API/formatters';
 import { type DatapointController } from 'service/Datapoint';
 
 export const getPhase: DatapointController<SalePhase> = flow(function* () {

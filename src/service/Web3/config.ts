@@ -1,6 +1,5 @@
 import { type ClientConfig, configureChains } from '@wagmi/core';
 import { polygonMumbai, polygon } from '@wagmi/core/chains';
-import { alchemyProvider } from '@wagmi/core/providers/alchemy';
 import { publicProvider } from '@wagmi/core/providers/public';
 import { CoinbaseWalletConnector } from '@wagmi/core/connectors/coinbaseWallet';
 import { MetaMaskConnector } from '@wagmi/core/connectors/metaMask';
@@ -10,10 +9,7 @@ import { Env } from 'assets/constants';
 
 const network = Env.IS_TESTNET ? polygonMumbai : polygon;
 
-const { chains, provider, webSocketProvider } = configureChains(
-  [network],
-  [publicProvider(), alchemyProvider({ apiKey: Env.ALCHEMY_API_KEY })],
-);
+const { chains, provider, webSocketProvider } = configureChains([network], [publicProvider()]);
 
 const web3Connectors = {
   metamask: new MetaMaskConnector({

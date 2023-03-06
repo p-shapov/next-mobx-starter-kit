@@ -1,8 +1,6 @@
 import { Service } from 'typedi';
 import { type Address } from '@wagmi/core';
 
-import { ADDRESS_PLACEHOLDER } from 'assets/constants';
-
 import { type Action, InjectAction } from 'service/Action';
 import { walletController } from 'service/Web3/controllers';
 import { mkDatapoint } from 'service/Datapoint';
@@ -12,7 +10,10 @@ import { IWallet } from './Interface';
 
 @Service()
 export class Wallet implements IWallet {
-  address = mkDatapoint<Address>({ fetch: async () => ADDRESS_PLACEHOLDER });
+  address = mkDatapoint<Address | undefined>({
+    fetch: async () => web3Client.data?.account,
+    $deps: () => [],
+  });
 
   constructor(
     @InjectAction(walletController.connectMetamask.token, { fetch: walletController.connectMetamask })
@@ -31,6 +32,6 @@ export class Wallet implements IWallet {
   ) {
     this.disconnect.send();
 
-    web3Client;
+    web3Client.subscribe((state) => state.data?.account, this.address.set);
   }
 }

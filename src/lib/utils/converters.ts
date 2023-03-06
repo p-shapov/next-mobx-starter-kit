@@ -1,4 +1,4 @@
-import { formatEther } from 'ethers';
+import { formatEther } from 'ethers/lib/utils.js';
 
 import { SalePhase } from 'lib/types/common';
 

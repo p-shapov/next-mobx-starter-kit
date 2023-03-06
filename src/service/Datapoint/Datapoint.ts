@@ -13,12 +13,21 @@ import { fetchData, getErrorMessage, isServer } from 'lib/utils';
 
 import type { DatapointParameters } from './types';
 
-export const mkDatapoint = <T, D extends Array<unknown> = []>(params: DatapointParameters<T, D>) => {
+export const mkDatapoint = <T, D extends Array<unknown> = []>(
+  params: DatapointParameters<T, D>,
+): Datapoint<T, D> => {
   return new Datapoint<T, D>(params);
 };
 
 export class Datapoint<T, D extends Array<unknown> = []> {
   data = fetchData<T>(this.params.initial);
+
+  set = (value: T) => {
+    runInAction(() => {
+      this.data.value = value;
+      this.data.status = 'Succeed';
+    });
+  };
 
   refetch = async (...deps: D) => {
     const { fetch } = this.params;

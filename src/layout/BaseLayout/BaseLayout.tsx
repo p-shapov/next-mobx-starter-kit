@@ -1,12 +1,13 @@
-import { type ReactNode } from 'react';
+import { type ReactNode, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
 import { type Address } from '@wagmi/core';
 import { observer } from 'mobx-react-lite';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { ADDRESS_PLACEHOLDER } from 'assets/constants';
 
-import { Button, Link, Menu, useModalState } from 'lib/components';
+import { Button, ClientOnly, Link, Menu, useModalState } from 'lib/components';
 import { trim } from 'lib/utils';
 import { inject } from 'lib/hocs';
 import { MetalampLogo_SVG } from 'lib/icons';
@@ -21,7 +22,7 @@ import styles from './BaseLayout.module.scss';
 import { headerNav, myNftsLink } from './constants';
 
 type BaseLayoutProps = {
-  address: Datapoint<Address>;
+  address: Datapoint<Address | undefined>;
   children: ReactNode;
   disconnect: Action<void>;
   gradient?: 'diagonal' | 'linear';
@@ -33,16 +34,52 @@ const WalletModal = inject(WalletModalComponent)(Wallet, (wallet) => ({
   connectWalletConnect: wallet.connectWalletConnect,
 }));
 
-const BaseLayout = inject(
-  observer(({ address, children, disconnect, gradient = 'diagonal' }: BaseLayoutProps) => {
+const BaseLayoutComponent = observer(
+  ({ address, children, disconnect, gradient = 'diagonal' }: BaseLayoutProps) => {
     const { pathname } = useRouter();
     const walletModalState = useModalState();
 
+    const [autoFocusWalletEnabled, setWalletAutoFocusEnabled] = useState(false);
+
+    const [autoFocusWalletConnect, setAutoFocusWalletConnect] = useState(false);
+    const [autoFocusWalletMenu, setAutoFocusWalletMenu] = useState(false);
+
+    const handleFocusWalletWrapper = () => {
+      setWalletAutoFocusEnabled(true);
+    };
+
+    useEffect(() => {
+      if (address.data.value && autoFocusWalletEnabled) {
+        setAutoFocusWalletConnect(false);
+        setAutoFocusWalletMenu(true);
+      }
+    }, [address.data.value, autoFocusWalletEnabled]);
+
     return (
       <>
-        <div className={classNames(styles['gradient'], styles[`gradient--type_${gradient}`])}>
-          {gradient === 'diagonal' && <div className={styles['diagonal']} />}
-        </div>
+        <AnimatePresence mode="popLayout">
+          {gradient === 'diagonal' ? (
+            <motion.div
+              key="diagonal"
+              className={classNames(styles['gradient'], styles[`gradient--type_diagonal`])}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              {gradient === 'diagonal' && <div className={styles['diagonal']} />}
+            </motion.div>
+          ) : (
+            <motion.div
+              key="linear"
+              className={classNames(styles['gradient'], styles[`gradient--type_linear`])}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            />
+          )}
+        </AnimatePresence>
 
         <div className={styles['root']}>
           <header className={styles['header']}>
@@ -65,27 +102,59 @@ const BaseLayout = inject(
                 </ul>
               </nav>
 
-              {address.data.value ? (
-                <Menu
-                  text={
-                    address.data.value && address.data.status !== 'Loading'
-                      ? trim(address.data.value, 5, 4)
-                      : trim(ADDRESS_PLACEHOLDER, 5, 4)
-                  }
-                  label="open header menu"
-                  title="header menu"
-                  items={[
-                    { ...myNftsLink, current: pathname === myNftsLink.href },
-                    {
-                      text: 'disconnect',
-                      onClick: disconnect.send,
-                      loading: disconnect.data.status === 'Loading',
-                    },
-                  ]}
-                />
-              ) : (
-                <Button text="Connect" onClick={walletModalState.toggle} uppercase />
-              )}
+              <div className={styles['wallet']} onFocus={handleFocusWalletWrapper}>
+                <ClientOnly>
+                  <AnimatePresence mode="wait">
+                    {address.data.value ? (
+                      <motion.div
+                        key="address"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                      >
+                        <Menu
+                          text={
+                            address.data.value && address.data.status !== 'Loading'
+                              ? trim(address.data.value, 5, 4)
+                              : trim(ADDRESS_PLACEHOLDER, 5, 4)
+                          }
+                          label="open header menu"
+                          title="header menu"
+                          autoFocus={autoFocusWalletMenu}
+                          items={[
+                            { ...myNftsLink, current: pathname === myNftsLink.href },
+                            {
+                              text: 'disconnect',
+                              async onClick() {
+                                await disconnect.send();
+                                setAutoFocusWalletConnect(true);
+                                setAutoFocusWalletMenu(false);
+                              },
+                              loading: disconnect.data.status === 'Loading',
+                            },
+                          ]}
+                        />
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="connect"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                      >
+                        <Button
+                          text="Connect wallet"
+                          onClick={walletModalState.toggle}
+                          autoFocus={autoFocusWalletConnect}
+                          uppercase
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </ClientOnly>
+              </div>
             </div>
           </header>
 
@@ -95,8 +164,10 @@ const BaseLayout = inject(
         </div>
       </>
     );
-  }),
-)(Wallet, (wallet) => ({
+  },
+);
+
+const BaseLayout = inject(BaseLayoutComponent)(Wallet, (wallet) => ({
   address: wallet.address,
   disconnect: wallet.disconnect,
 }));

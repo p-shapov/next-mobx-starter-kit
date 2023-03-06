@@ -98,6 +98,36 @@
   > * {
     position: absolute;
   }
+
+  path:nth-child(3) {
+    @include media-reduced-motion(false) {
+      fill-opacity: 0;
+
+      animation: light-on-anim 2s ease 500ms forwards;
+    }
+  }
+
+  path:nth-child(1) {
+    @include media-reduced-motion(false) {
+      fill-opacity: 0;
+
+      animation: light-on-anim 3s ease 500ms forwards;
+    }
+  }
+
+  path:nth-child(2) {
+    @include media-reduced-motion(false) {
+      fill-opacity: 0;
+
+      animation: light-on-anim 2s ease 1.8s forwards;
+    }
+  }
+}
+
+@keyframes light-on-anim {
+  to {
+    fill-opacity: 1;
+  }
 }
 
 .links {
@@ -119,6 +149,14 @@
     line-height: 2.2rem;
     text-transform: uppercase;
   }
+}
+
+.wallet {
+  display: flex;
+
+  justify-content: flex-end;
+
+  width: 216px;
 }
 
 .main {

@@ -1,6 +1,7 @@
 import { type LinkItem } from 'lib/types/common';
 
 export const headerNav: Array<LinkItem> = [
+  { href: '/sale', text: 'Sale' },
   { href: '/about-us', text: 'About us' },
   { href: '/roadmap', text: 'Roadmap' },
   { href: '/team', text: 'Team' },
