@@ -20,7 +20,7 @@ type ButtonProps = {
 };
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ text, icon, stretch, uppercase, loading, ...rest }, ref) => {
+  ({ text, icon, stretch, uppercase, loading, disabled, ...rest }, ref) => {
     return (
       <BaseButton
         {...rest}
@@ -31,6 +31,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           [styles['root--uppercase']]: uppercase,
           [styles['root--loading']]: loading,
         })}
+        disabled={loading || disabled}
       >
         {icon && <span className={styles['icon']}>{icon}</span>}
         <span className={styles['text']}>{text}</span>

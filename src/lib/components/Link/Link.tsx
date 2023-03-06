@@ -1,11 +1,10 @@
 import NextLink from 'next/link';
 import { forwardRef, type ReactNode } from 'react';
 
-type LinkProps = {
+import { LinkItem } from 'lib/types/common';
+
+type LinkProps = Omit<LinkItem, 'text'> & {
   children: ReactNode;
-  href: string;
-  external?: boolean;
-  current?: boolean;
   className?: string;
 };
 

@@ -94,10 +94,8 @@
     }
   }
 
-  &:disabled {
+  &:disabled:not(&--loading) {
     opacity: 0.4;
-
-    cursor: default;
   }
 
   &--loading::before {

@@ -1,9 +1,29 @@
-import type { NextPageWithLayout } from 'lib/types/common';
+import { useRouter } from 'next/router';
 
-import { BaseLayout } from 'layout/BaseLayout';
+import type { NextPageWithLayout } from 'lib/types/common';
+import { inject } from 'lib/hocs';
+
+import { Wallet } from 'service/Wallet';
+
+import { ConnectButton as ConnectButtonComponent } from 'view/ConnectButton';
+
+import { BaseLayout, WalletModal } from 'layout/BaseLayout';
+
+import { saleLink } from './constants';
+
+const ConnectButton = inject(ConnectButtonComponent)(Wallet, (wallet) => ({
+  connect: wallet.connect,
+  connected: wallet.connected,
+}));
 
 const Home: NextPageWithLayout = () => {
-  return null;
+  const router = useRouter();
+
+  return (
+    <div>
+      <ConnectButton Modal={WalletModal} link={{ ...saleLink, current: router.pathname === saleLink.href }} />
+    </div>
+  );
 };
 
 Home.getLayout = (page) => <BaseLayout>{page}</BaseLayout>;

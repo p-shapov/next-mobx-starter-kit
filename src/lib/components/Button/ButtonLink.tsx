@@ -12,7 +12,6 @@ type ButtonLinkProps = LinkItem & {
   tabIndex?: number;
   stretch?: boolean;
   uppercase?: boolean;
-  current?: boolean;
   disabled?: boolean;
   focusable?: boolean;
   autoFocus?: boolean;

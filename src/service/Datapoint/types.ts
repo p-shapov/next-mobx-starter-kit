@@ -8,10 +8,10 @@ export type DatapointParameters<T, D extends Array<unknown> = []> = {
   initial?: T;
   polling?: number;
   $deps?(): D;
-  fetch(...args: [...D, AbortSignal | undefined]): CancellableOrPromise<T>;
+  fetch(...args: [...deps: D, signal?: AbortSignal]): CancellableOrPromise<T>;
 };
 
 export type DatapointController<T, D extends Array<unknown> = []> = {
-  (...args: [...D, AbortSignal]): CancellableOrPromise<T>;
+  (...args: [...deps: D, signal?: AbortSignal]): CancellableOrPromise<T>;
   token?: Token<Datapoint<T, D>>;
 };

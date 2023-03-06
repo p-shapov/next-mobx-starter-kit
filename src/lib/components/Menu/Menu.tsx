@@ -1,4 +1,4 @@
-import { forwardRef, type MouseEvent } from 'react';
+import { forwardRef, MouseEventHandler, type MouseEvent } from 'react';
 import { Menu as BaseMenu, MenuButton as BaseMenuButton, MenuItem, useMenuState } from 'ariakit/Menu';
 
 import { Button, ButtonLink, type ButtonProps, type ButtonLinkProps } from 'lib/components';
@@ -22,6 +22,15 @@ const Menu = forwardRef<HTMLButtonElement, MenuProps>(({ title, label, items, ..
     gutter: 14,
   });
 
+  const mkHandleClickMenuItem =
+    <T extends HTMLAnchorElement & HTMLButtonElement>(
+      item: MenuProps['items'][number],
+    ): MouseEventHandler<T> =>
+    (e: MouseEvent<T>) => {
+      item.onClick?.(e);
+      menu.hide();
+    };
+
   return (
     <div className={styles['root']}>
       <BaseMenuButton {...rest} ref={ref} state={menu} as={Button} aria-label={label} />
@@ -35,13 +44,10 @@ const Menu = forwardRef<HTMLButtonElement, MenuProps>(({ title, label, items, ..
                 state={menu}
                 key={idx}
                 as={ButtonLink}
-                onClick={(e: MouseEvent<HTMLAnchorElement>) => {
-                  item.onClick?.(e);
-                  menu.hide();
-                }}
                 aria-label={title}
                 stretch
                 uppercase
+                onClick={mkHandleClickMenuItem(item)}
               />
             ) : (
               <MenuItem
@@ -49,13 +55,10 @@ const Menu = forwardRef<HTMLButtonElement, MenuProps>(({ title, label, items, ..
                 state={menu}
                 key={idx}
                 as={Button}
-                onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                  item.onClick?.(e);
-                  menu.hide();
-                }}
                 aria-label={title}
                 stretch
                 uppercase
+                onClick={mkHandleClickMenuItem(item)}
               />
             ),
           )}

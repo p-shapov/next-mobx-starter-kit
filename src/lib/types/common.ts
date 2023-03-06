@@ -22,4 +22,5 @@ export type LinkItem = {
   href: string;
   text: string;
   external?: boolean;
+  current?: boolean;
 };
