@@ -47,7 +47,7 @@ const AccountButton: FC<AccountButtonProps> = observer(({ Modal, connect, discon
   return (
     <ClientOnly>
       <div onFocus={handleFocusWrapper}>
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" initial={address.data.status !== 'Succeed'}>
           {address.data.value ? (
             <motion.div
               key="address"

@@ -6,8 +6,9 @@ import { type Action, InjectAction } from 'service/Action';
 import { walletController } from 'service/Web3/controllers';
 import { mkDatapoint } from 'service/Datapoint';
 import { web3Client } from 'service/Web3';
-import { map, MappedDatapoint } from 'service/Datapoint/utils';
+import { map } from 'service/Datapoint/utils';
 import type { ConnectorName } from 'service/Web3/types';
+import { MappedDatapoint } from 'service/Datapoint/types';
 
 import { IWallet } from './Interface';
 
@@ -18,7 +19,7 @@ class Wallet implements IWallet {
   }
 
   get connected(): MappedDatapoint<boolean> {
-    return map(this.address, (x) => !!x);
+    return map(this._address, (x) => !!x);
   }
 
   constructor(

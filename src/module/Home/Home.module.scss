@@ -1,0 +1,55 @@
+.root {
+  display: grid;
+
+  row-gap: 30px;
+}
+
+.layout {
+  display: grid;
+
+  row-gap: 30px;
+
+  padding: 74px 110px 0;
+}
+
+.title {
+  font-size: 10rem;
+  font-weight: 500;
+  line-height: 12.2rem;
+
+  span {
+    position: relative;
+
+    display: inline-flex;
+
+    width: 6rem;
+    height: 5.2rem;
+  }
+
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    display: inline-flex;
+
+    width: 6.9rem;
+    height: 7.4rem;
+  }
+}
+
+.description {
+  font-size: 2.4rem;
+  font-weight: 500;
+  line-height: 2.9rem;
+}
+
+.buttons {
+  display: grid;
+
+  grid-auto-flow: column;
+
+  column-gap: 20px;
+
+  width: max-content;
+}

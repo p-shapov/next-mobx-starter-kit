@@ -8,6 +8,8 @@ import type { LinkItem } from 'lib/types/common';
 import type { MappedDatapoint } from 'service/Datapoint/types';
 import type { MappedAction } from 'service/Action/types';
 
+import styles from './ConnectButton.module.scss';
+
 type ConnectButtonProps = {
   Modal: FC<Pick<ModalProps, 'state'>>;
   connect: MappedAction<void>;
@@ -39,9 +41,9 @@ const ConnectButton: FC<ConnectButtonProps> = observer(({ Modal, connect, link, 
   };
 
   return (
-    <div>
-      <div onFocus={handleFocusWrapper}>
-        <AnimatePresence mode="wait">
+    <>
+      <div className={styles['root']} onFocus={handleFocusWrapper}>
+        <AnimatePresence mode="wait" initial={connected.data.status !== 'Succeed'}>
           {connected.data.value ? (
             <motion.div
               key="link"
@@ -50,7 +52,7 @@ const ConnectButton: FC<ConnectButtonProps> = observer(({ Modal, connect, link, 
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <ButtonLink {...link} text="Start minting" autoFocus={autoFocusLink} uppercase />
+              <ButtonLink {...link} text="Start minting" autoFocus={autoFocusLink} stretch uppercase />
             </motion.div>
           ) : (
             <motion.div
@@ -65,6 +67,7 @@ const ConnectButton: FC<ConnectButtonProps> = observer(({ Modal, connect, link, 
                 onClick={handleClickConnectButton}
                 autoFocus={autoFocusConnectButton}
                 loading={connect.data.status === 'Loading'}
+                stretch
                 uppercase
               />
             </motion.div>
@@ -73,7 +76,7 @@ const ConnectButton: FC<ConnectButtonProps> = observer(({ Modal, connect, link, 
       </div>
 
       <Modal state={walletModal} />
-    </div>
+    </>
   );
 });
 
