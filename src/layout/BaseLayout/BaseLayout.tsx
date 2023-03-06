@@ -1,4 +1,4 @@
-import { type ReactNode, useState, useEffect } from 'react';
+import { type ReactNode, useState, useEffect, FC } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
 import { type Address } from '@wagmi/core';
@@ -34,8 +34,8 @@ const WalletModal = inject(WalletModalComponent)(Wallet, (wallet) => ({
   connectWalletConnect: wallet.connectWalletConnect,
 }));
 
-const BaseLayoutComponent = observer(
-  ({ address, children, disconnect, gradient = 'diagonal' }: BaseLayoutProps) => {
+const BaseLayoutComponent: FC<BaseLayoutProps> = observer(
+  ({ address, children, disconnect, gradient = 'diagonal' }) => {
     const { pathname } = useRouter();
     const walletModalState = useModalState();
 

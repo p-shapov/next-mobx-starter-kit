@@ -30,8 +30,6 @@ class Wallet implements IWallet {
     @InjectAction(walletController.disconnect.token, { fetch: walletController.disconnect })
     public disconnect: Action<void, []>,
   ) {
-    this.disconnect.send();
-
     web3Client.subscribe((state) => state.data?.account, this.address.set);
   }
 }
