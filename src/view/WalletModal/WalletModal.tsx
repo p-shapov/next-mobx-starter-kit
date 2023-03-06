@@ -28,7 +28,7 @@ const WalletModal: FC<WalletModalProps> = observer(({ connect, state, ...rest })
           <DialogDismiss
             as={Button}
             text="MetaMask"
-            icon={<MetaMaskLogo_SVG title="metaMask logo" width={30} height={26} />}
+            icon={<MetaMaskLogo_SVG title="metaMask logo" width="3rem" height="2.6rem" />}
             onClick={mkHandleClickConnect('metamask')}
             stretch
           />
@@ -37,7 +37,7 @@ const WalletModal: FC<WalletModalProps> = observer(({ connect, state, ...rest })
           <DialogDismiss
             as={Button}
             text="Coinbase"
-            icon={<CoinbaseLogo_SVG title="coinbase logo" width={24} height={24} />}
+            icon={<CoinbaseLogo_SVG title="coinbase logo" width="2.4rem" height="2.4rem" />}
             onClick={mkHandleClickConnect('coinbase')}
             stretch
           />
@@ -46,7 +46,7 @@ const WalletModal: FC<WalletModalProps> = observer(({ connect, state, ...rest })
           <DialogDismiss
             as={Button}
             text="WalletConnect"
-            icon={<WalletConnectLogo_SVG title="walletConnect logo" width={24} height={22} />}
+            icon={<WalletConnectLogo_SVG title="walletConnect logo" width="2.4rem" height="2.2rem" />}
             onClick={mkHandleClickConnect('walletConnect')}
             stretch
           />

@@ -5,7 +5,9 @@
 
   justify-content: center;
 
+  grid-template-columns: max-content;
+
   li {
-    width: 290px;
+    width: 100%;
   }
 }

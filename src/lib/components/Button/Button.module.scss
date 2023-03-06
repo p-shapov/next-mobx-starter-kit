@@ -36,6 +36,7 @@
   grid-template-rows: min-content;
 
   width: max-content;
+  min-width: max-content;
   height: min-content;
 
   color: $fg-secondary;
@@ -146,7 +147,4 @@
   display: flex;
 
   align-self: center;
-
-  width: 25px;
-  height: 25px;
 }

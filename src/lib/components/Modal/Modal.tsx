@@ -27,7 +27,7 @@ const Modal: FC<ModalProps> = ({ title, state, children, outsideClickClose = tru
       <DialogHeading className={styles['title']}>{title}</DialogHeading>
 
       <DialogDismiss className={styles['close']}>
-        <Close_SVG width={40} height={40} title="Close" />
+        <Close_SVG width="4rem" height="4rem" title="Close" />
       </DialogDismiss>
 
       <div>{children}</div>

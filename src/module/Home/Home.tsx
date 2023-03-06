@@ -34,7 +34,7 @@ const Home: NextPageWithLayout = () => {
         To the
         <br />M
         <span>
-          <MetalampLogo_SVG />
+          <MetalampLogo_SVG width="6.9rem" height="7.4rem" />
         </span>
         taMoon
       </Heading>
