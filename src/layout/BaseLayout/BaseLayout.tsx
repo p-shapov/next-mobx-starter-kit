@@ -16,7 +16,7 @@ import styles from './BaseLayout.module.scss';
 import { headerLinks, accountLinks } from './constants';
 
 type BaseLayoutProps = {
-  children: ReactNode;
+  content: ReactNode;
   gradient?: 'diagonal' | 'linear';
 };
 
@@ -25,12 +25,12 @@ const WalletModal = inject(WalletModalComponent)(Wallet, (wallet) => ({
 }));
 
 const AccountButton = inject(AccountButtonComponent)(Wallet, (wallet) => ({
-  disconnect: wallet.disconnect,
   connect: wallet.connect,
+  disconnect: wallet.disconnect,
   address: wallet.address,
 }));
 
-const BaseLayout: FC<BaseLayoutProps> = ({ children, gradient = 'diagonal' }) => {
+const BaseLayout: FC<BaseLayoutProps> = ({ content, gradient = 'diagonal' }) => {
   const router = useRouter();
 
   return (
@@ -89,7 +89,7 @@ const BaseLayout: FC<BaseLayoutProps> = ({ children, gradient = 'diagonal' }) =>
           </div>
         </header>
 
-        <main className={styles['main']}>{children}</main>
+        <main className={styles['main']}>{content}</main>
       </div>
     </>
   );

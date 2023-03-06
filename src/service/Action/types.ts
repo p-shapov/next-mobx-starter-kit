@@ -4,6 +4,8 @@ import type { CancellableOrPromise } from 'lib/types/common';
 
 import type { Action } from './Action';
 
+export type MappedAction<T> = Pick<Action<T>, 'data'>;
+
 export type ActionParameters<T, D extends Array<unknown> = [], I extends boolean = false> = {
   deps?: D;
   unprepared?: I;

@@ -8,12 +8,13 @@ import { trim } from 'lib/utils';
 import type { LinkItem } from 'lib/types/common';
 
 import { type Action } from 'service/Action';
-import { type MappedDatapoint } from 'service/Datapoint/utils';
+import type { MappedDatapoint } from 'service/Datapoint/types';
+import type { MappedAction } from 'service/Action/types';
 
 type AccountButtonProps = {
   Modal: FC<Pick<ModalProps, 'state'>>;
+  connect: MappedAction<void>;
   disconnect: Action<void>;
-  connect: MappedDatapoint<void>;
   address: MappedDatapoint<Address | undefined>;
   links: Array<LinkItem>;
 };

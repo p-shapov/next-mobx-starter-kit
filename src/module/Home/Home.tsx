@@ -6,6 +6,7 @@ import { inject } from 'lib/hocs';
 import { Wallet } from 'service/Wallet';
 
 import { ConnectButton as ConnectButtonComponent } from 'view/ConnectButton';
+import { WhitelistButton } from 'view/WhitelistButton';
 
 import { BaseLayout, WalletModal } from 'layout/BaseLayout';
 
@@ -21,11 +22,17 @@ const Home: NextPageWithLayout = () => {
 
   return (
     <div>
-      <ConnectButton Modal={WalletModal} link={{ ...saleLink, current: router.pathname === saleLink.href }} />
+      <div>
+        <ConnectButton
+          Modal={WalletModal}
+          link={{ ...saleLink, current: router.pathname === saleLink.href }}
+        />
+        <WhitelistButton />
+      </div>
     </div>
   );
 };
 
-Home.getLayout = (page) => <BaseLayout>{page}</BaseLayout>;
+Home.getLayout = (page) => <BaseLayout content={page} />;
 
 export { Home };

@@ -5,11 +5,12 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ButtonLink, Button, type ModalProps, useModalState } from 'lib/components';
 import type { LinkItem } from 'lib/types/common';
 
-import { type MappedDatapoint } from 'service/Datapoint/utils';
+import type { MappedDatapoint } from 'service/Datapoint/types';
+import type { MappedAction } from 'service/Action/types';
 
 type ConnectButtonProps = {
   Modal: FC<Pick<ModalProps, 'state'>>;
-  connect: MappedDatapoint<void>;
+  connect: MappedAction<void>;
   connected: MappedDatapoint<boolean>;
   link: LinkItem;
 };
@@ -19,11 +20,7 @@ const ConnectButton: FC<ConnectButtonProps> = observer(({ Modal, connect, link, 
   const [autoFocusConnectButton, setAutoFocusConnectButton] = useState(false);
   const [autoFocusLink, setAutoFocusLink] = useState(false);
 
-  const modalState = useModalState();
-
-  const handleClickConnectWallet = () => {
-    modalState.show();
-  };
+  const walletModal = useModalState();
 
   useEffect(() => {
     if (connected?.data.value && autoFocusEnabled) {
@@ -32,6 +29,10 @@ const ConnectButton: FC<ConnectButtonProps> = observer(({ Modal, connect, link, 
       setAutoFocusEnabled(false);
     }
   }, [connected.data.value, autoFocusEnabled]);
+
+  const handleClickConnectButton = () => {
+    walletModal.show();
+  };
 
   const handleFocusWrapper = () => {
     setAutoFocusEnabled(true);
@@ -61,7 +62,7 @@ const ConnectButton: FC<ConnectButtonProps> = observer(({ Modal, connect, link, 
             >
               <Button
                 text="Connect wallet"
-                onClick={handleClickConnectWallet}
+                onClick={handleClickConnectButton}
                 autoFocus={autoFocusConnectButton}
                 loading={connect.data.status === 'Loading'}
                 uppercase
@@ -71,7 +72,7 @@ const ConnectButton: FC<ConnectButtonProps> = observer(({ Modal, connect, link, 
         </AnimatePresence>
       </div>
 
-      <Modal state={modalState} />
+      <Modal state={walletModal} />
     </div>
   );
 });

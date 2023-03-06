@@ -2,10 +2,7 @@ import { makeAutoObservable } from 'mobx';
 
 import { Status } from 'lib/types/common';
 
-import type { Datapoint } from './Datapoint';
-
-export type MappedDatapoint<T> = Pick<Datapoint<T>, 'data'>;
-export type CombinedDatapoint<T, K> = MappedDatapoint<[T, K]>;
+import type { CombinedDatapoint, MappedDatapoint } from './types';
 
 const mergeStatus = (a: Status, b: Status) => {
   if (a === b) return a;
