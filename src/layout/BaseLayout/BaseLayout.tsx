@@ -2,6 +2,7 @@ import { type ReactNode, FC } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
+import NextImage from 'next/image';
 
 import { Link } from 'lib/components';
 import { inject } from 'lib/hocs';
@@ -13,7 +14,7 @@ import { WalletModal as WalletModalComponent } from 'view/WalletModal';
 import { AccountButton as AccountButtonComponent } from 'view/AccountButton';
 
 import styles from './BaseLayout.module.scss';
-import { headerLinks, accountLinks } from './constants';
+import { headerLinks, accountLinks, socialLinks } from './constants';
 
 type BaseLayoutProps = {
   content: ReactNode;
@@ -90,6 +91,18 @@ const BaseLayout: FC<BaseLayoutProps> = ({ content, gradient = 'diagonal' }) => 
         </header>
 
         <main className={styles['main']}>{content}</main>
+
+        <footer>
+          <ul className={styles['socials']}>
+            {socialLinks.map(({ alt, src, href }, idx) => (
+              <li key={idx}>
+                <Link href={href} external>
+                  <NextImage src={src} alt={alt} width={40} height={40} quality={100} priority />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </footer>
       </div>
     </>
   );
