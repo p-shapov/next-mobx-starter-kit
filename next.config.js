@@ -5,7 +5,7 @@ const nextConfig = withSvgr({
   reactStrictMode: true,
   swcMinify: true,
   sassOptions: {
-    additionalData: `@import "~src/lib/styles/index.scss";`,
+    additionalData: `@import "~src/assets/styles/index.scss";`,
   },
 });
 

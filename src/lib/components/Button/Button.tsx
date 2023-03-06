@@ -1,10 +1,10 @@
-import { Button as BaseButton } from 'reakit/Button';
+import { Button as BaseButton } from 'ariakit/Button';
 import { forwardRef, type MouseEventHandler, type ReactElement } from 'react';
 import classNames from 'classnames';
 
 import styles from './Button.module.scss';
 
-export type ButtonProps = {
+type ButtonProps = {
   text: string;
   type?: 'button' | 'submit' | 'reset';
   tabIndex?: number;
@@ -17,7 +17,7 @@ export type ButtonProps = {
   onClick?: MouseEventHandler<HTMLButtonElement>;
 };
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ text, icon, stretch, uppercase, loading, ...rest }, ref) => {
     return (
       <BaseButton
@@ -30,9 +30,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           [styles['root--loading']]: loading,
         })}
       >
-        <span className={styles['text']}>{text}</span>
         {icon && <span className={styles['icon']}>{icon}</span>}
+        <span className={styles['text']}>{text}</span>
       </BaseButton>
     );
   },
 );
+
+export { Button, type ButtonProps };

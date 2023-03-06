@@ -1,7 +1,10 @@
-import { FetchData } from 'lib/types/common';
+import type { Action } from 'service/Action';
+import type { Datapoint } from 'service/Datapoint';
 
 export interface IWallet {
-  address: FetchData<string>;
-  connect(): void;
-  disconnect(): void;
+  address: Datapoint<string>;
+  connectMetamask: Action<void>;
+  connectCoinbase: Action<void>;
+  connectWalletConnect: Action<void>;
+  disconnect: Action<void>;
 }

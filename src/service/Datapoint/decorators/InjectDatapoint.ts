@@ -1,35 +1,42 @@
-import { type Constructable, type Token, Container } from 'typedi';
+/* eslint-disable @typescript-eslint/ban-types */
+import { type Constructable, Token, Container } from 'typedi';
 
-import { type Datapoint, type DatapointParameters, mkDatapoint } from '../Datapoint';
+import { type Datapoint, mkDatapoint } from '../Datapoint';
+import type { DatapointParameters } from '../types';
 
-export function InjectDatapoint<T>({
-  token,
-  ...params
-}: DatapointParameters<T> & {
-  token?: Token<Datapoint<T>>;
-}) {
+function InjectDatapoint<T, D extends Array<unknown> = []>(params: DatapointParameters<T, D>): Function;
+function InjectDatapoint<T, D extends Array<unknown> = []>(
+  token: Token<Datapoint<T, D>> | undefined,
+  params: DatapointParameters<T, D>,
+): Function;
+function InjectDatapoint<T, D extends Array<unknown> = []>(
+  tokenOrParams: Token<Datapoint<T, D>> | DatapointParameters<T, D> | undefined,
+  params?: DatapointParameters<T, D>,
+): Function {
   return (object: Constructable<unknown>, propertyName: string, index?: number) => {
     Container.registerHandler({
       object,
       propertyName,
       index,
       value: (container) => {
-        if (token) {
-          let instance: Datapoint<T>;
+        if (params) {
+          let instance: Datapoint<T, D>;
 
-          if (container.has(token)) {
-            instance = container.get(token);
+          if (tokenOrParams instanceof Token && container.has(tokenOrParams)) {
+            instance = container.get(tokenOrParams);
           } else {
             instance = mkDatapoint(params);
 
-            if (token) Container.set(token, instance);
+            if (tokenOrParams instanceof Token) Container.set(tokenOrParams, instance);
           }
 
           return instance;
         }
 
-        return mkDatapoint(params);
+        return mkDatapoint(tokenOrParams as DatapointParameters<T, D>);
       },
     });
   };
 }
+
+export { InjectDatapoint };

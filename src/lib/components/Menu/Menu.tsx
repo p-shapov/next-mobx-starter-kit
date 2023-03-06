@@ -1,5 +1,5 @@
-import { forwardRef, useId, type MouseEvent } from 'react';
-import { Menu as BaseMenu, MenuButton as BaseMenuButton, MenuItem, useMenuState } from 'reakit/Menu';
+import { forwardRef, type MouseEvent } from 'react';
+import { Menu as BaseMenu, MenuButton as BaseMenuButton, MenuItem, useMenuState } from 'ariakit/Menu';
 
 import { Button, ButtonLink, type ButtonProps, type ButtonLinkProps } from 'lib/components';
 
@@ -8,35 +8,32 @@ import styles from './Menu.module.scss';
 type ButtonItem = Omit<ButtonProps, 'focusable' | 'type' | 'uppercase' | 'stretch' | 'icon'>;
 type ButtonLinkItem = Omit<ButtonLinkProps, 'icon' | 'focusable' | 'uppercase' | 'stretch'>;
 
-export type MenuProps = Omit<ButtonProps, 'onClick'> & {
+type MenuProps = Omit<ButtonProps, 'onClick'> & {
   text: string;
   label?: string;
   title?: string;
   items: Array<ButtonItem | ButtonLinkItem>;
 };
 
-export const Menu = forwardRef<HTMLButtonElement, MenuProps>(({ title, label, items, ...rest }, ref) => {
-  const baseId = useId();
+const Menu = forwardRef<HTMLButtonElement, MenuProps>(({ title, label, items, ...rest }, ref) => {
   const menu = useMenuState({
-    baseId,
     placement: 'bottom-end',
     animated: 500,
     gutter: 14,
-    loop: true,
   });
 
   return (
     <div className={styles['root']}>
-      <BaseMenuButton {...rest} {...menu} ref={ref} as={Button} aria-label={label} />
+      <BaseMenuButton {...rest} ref={ref} state={menu} as={Button} aria-label={label} />
 
-      <BaseMenu {...menu} className={styles['dialog']} aria-label={title}>
+      <BaseMenu state={menu} className={styles['dialog']} aria-label={title}>
         <div className={styles['content']}>
           {items.map((item, idx) =>
             'href' in item ? (
               <MenuItem
                 {...item}
-                {...menu}
-                key={`${baseId}-${idx}`}
+                state={menu}
+                key={idx}
                 as={ButtonLink}
                 onClick={(e: MouseEvent<HTMLAnchorElement>) => {
                   item.onClick?.(e);
@@ -49,8 +46,8 @@ export const Menu = forwardRef<HTMLButtonElement, MenuProps>(({ title, label, it
             ) : (
               <MenuItem
                 {...item}
-                {...menu}
-                key={`${baseId}-${idx}`}
+                state={menu}
+                key={idx}
                 as={Button}
                 onClick={(e: MouseEvent<HTMLButtonElement>) => {
                   item.onClick?.(e);
@@ -67,3 +64,5 @@ export const Menu = forwardRef<HTMLButtonElement, MenuProps>(({ title, label, it
     </div>
   );
 });
+
+export { Menu };

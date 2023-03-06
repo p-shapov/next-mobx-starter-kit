@@ -7,6 +7,8 @@ body,
 html {
   font-size: 62.5%;
 
+  color-scheme: dark;
+
   @include media-reduced-motion(false) {
     scroll-behavior: smooth;
   }
@@ -21,6 +23,10 @@ body {
   color: $fg-primary;
 
   background-color: $bg-primary;
+}
+
+svg {
+  display: grid;
 }
 
 label,

@@ -25,24 +25,6 @@
   animation: 2s ease-in-out infinite highlight;
 }
 
-@mixin bg-gradient-flow {
-  @include bg-gradient;
-
-  @keyframes flow {
-    0% {
-      background-position: -50px 0;
-    }
-
-    100% {
-      background-position: 0 0;
-    }
-  }
-
-  background-size: calc(100% + 100px) 100%;
-
-  animation: 4s linear infinite flow;
-}
-
 .root {
   $br-radius: 10px;
 
@@ -58,10 +40,7 @@
 
   color: $fg-secondary;
 
-  > * {
-    grid-row: 1;
-    grid-column: 1;
-  }
+  transition: opacity 300ms ease-in-out;
 
   &::before {
     content: '';
@@ -116,13 +95,13 @@
   }
 
   &:disabled {
+    opacity: 0.4;
+
     cursor: default;
   }
 
-  &--loading:not(:hover)::before {
-    @include bg-gradient-flow;
-
-    opacity: 0.7;
+  &--loading::before {
+    @include bg-gradient-highlight;
   }
 
   &:not(&--with-icon) {
@@ -136,6 +115,11 @@
   }
 
   &--with-icon {
+    grid-auto-columns: max-content;
+    grid-auto-flow: column;
+
+    column-gap: 25px;
+
     padding: 15px 25px;
 
     .text {

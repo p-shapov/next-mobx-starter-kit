@@ -1,35 +1,44 @@
-import { type Constructable, type Token, Container } from 'typedi';
+/* eslint-disable @typescript-eslint/ban-types */
+import { type Constructable, Token, Container } from 'typedi';
 
-import { type Action, type ActionParameters, mkAction } from '../Action';
+import { type Action, mkAction } from '../Action';
+import type { ActionParameters } from '../types';
 
-export function InjectAction<T>({
-  token,
-  ...params
-}: ActionParameters<T> & {
-  token?: Token<Action<T>>;
-}) {
+function InjectAction<T, D extends Array<unknown>, I extends boolean = false>(
+  params: ActionParameters<T, D, I>,
+): Function;
+function InjectAction<T, D extends Array<unknown>, I extends boolean = false>(
+  token: Token<Action<T, D, I>> | undefined,
+  params: ActionParameters<T, D, I>,
+): Function;
+function InjectAction<T, D extends Array<unknown>, I extends boolean = false>(
+  tokenOrParams: Token<Action<T, D, I>> | ActionParameters<T, D, I> | undefined,
+  params?: ActionParameters<T, D, I>,
+): Function {
   return (object: Constructable<unknown>, propertyName: string, index?: number) => {
     Container.registerHandler({
       object,
       propertyName,
       index,
-      value: (container) => {
-        if (token) {
-          let instance: Action<T>;
+      value: (containerInstance) => {
+        if (params) {
+          let instance: Action<T, D, I>;
 
-          if (container.has(token)) {
-            instance = container.get(token);
+          if (tokenOrParams instanceof Token && containerInstance.has(tokenOrParams)) {
+            instance = containerInstance.get(tokenOrParams);
           } else {
             instance = mkAction(params);
 
-            if (token) Container.set(token, instance);
+            if (tokenOrParams instanceof Token) Container.set(tokenOrParams, instance);
           }
 
           return instance;
         }
 
-        return mkAction(params);
+        return mkAction(tokenOrParams as ActionParameters<T, D, I>);
       },
     });
   };
 }
+
+export { InjectAction };

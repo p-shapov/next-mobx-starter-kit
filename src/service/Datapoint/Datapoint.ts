@@ -10,19 +10,8 @@ import {
 } from 'mobx';
 
 import { fetchData, getErrorMessage, isServer } from 'lib/utils';
-import { CancellableOrPromise } from 'lib/types/common';
 
-export type DatapointParameters<T, D extends Array<unknown> = []> = (D extends []
-  ? {
-      fetch(...args: [AbortSignal | undefined]): CancellableOrPromise<T>;
-    }
-  : {
-      $deps(): D;
-      fetch(...args: [...D, AbortSignal | undefined]): CancellableOrPromise<T>;
-    }) & {
-  initial?: T;
-  polling?: number;
-};
+import type { DatapointParameters } from './types';
 
 export const mkDatapoint = <T, D extends Array<unknown> = []>(params: DatapointParameters<T, D>) => {
   return new Datapoint<T, D>(params);
@@ -30,13 +19,6 @@ export const mkDatapoint = <T, D extends Array<unknown> = []>(params: DatapointP
 
 export class Datapoint<T, D extends Array<unknown> = []> {
   data = fetchData<T>(this.params.initial);
-
-  set = (value: T) => {
-    runInAction(() => {
-      this.data.status = 'Succeed';
-      this.data.value = value;
-    });
-  };
 
   refetch = async (...deps: D) => {
     const { fetch } = this.params;
@@ -74,7 +56,6 @@ export class Datapoint<T, D extends Array<unknown> = []> {
   constructor(private params: DatapointParameters<T, D>) {
     makeObservable(this, {
       data: observable,
-      set: action,
       refetch: action,
     });
 
@@ -89,39 +70,41 @@ export class Datapoint<T, D extends Array<unknown> = []> {
 
     onBecomeObserved(this, 'data', () => {
       this.disposeDepsListener = reaction(
-        () => this.params.$deps?.() || ([] as const),
+        () => this.params.$deps?.(),
         async (deps) => {
-          const { fetch } = this.params;
+          if (deps) {
+            const { fetch } = this.params;
 
-          const abortController = new AbortController();
+            const abortController = new AbortController();
 
-          this.cancelFetch();
-
-          runInAction(() => {
-            this.data.status = 'Loading';
-          });
-
-          try {
-            const awaitedData = fetch(...deps, abortController.signal);
-
-            this.cancelFetch = () => {
-              if ('cancel' in awaitedData) awaitedData.cancel();
-              abortController.abort();
-            };
-
-            const data = await awaitedData;
+            this.cancelFetch();
 
             runInAction(() => {
-              this.data.status = 'Succeed';
-              this.data.value = data;
+              this.data.status = 'Loading';
             });
-          } catch (error) {
-            if (error instanceof FlowCancellationError) return;
 
-            runInAction(() => {
-              this.data.status = 'Error';
-              this.data.error = getErrorMessage(error);
-            });
+            try {
+              const awaitedData = fetch(...deps, abortController.signal);
+
+              this.cancelFetch = () => {
+                if ('cancel' in awaitedData) awaitedData.cancel();
+                abortController.abort();
+              };
+
+              const data = await awaitedData;
+
+              runInAction(() => {
+                this.data.status = 'Succeed';
+                this.data.value = data;
+              });
+            } catch (error) {
+              if (error instanceof FlowCancellationError) return;
+
+              runInAction(() => {
+                this.data.status = 'Error';
+                this.data.error = getErrorMessage(error);
+              });
+            }
           }
         },
         { fireImmediately: true },
@@ -140,9 +123,10 @@ export class Datapoint<T, D extends Array<unknown> = []> {
       this.clearPollingTimer();
 
       const { fetch, $deps, polling } = this.params;
-      const deps = $deps?.() || [];
 
-      if (polling) {
+      if (polling && $deps) {
+        const deps = $deps();
+
         const timer = setInterval(async () => {
           const abortController = new AbortController();
 
@@ -153,7 +137,7 @@ export class Datapoint<T, D extends Array<unknown> = []> {
           });
 
           try {
-            const awaitedData = fetch(...(deps as [...D, AbortSignal]));
+            const awaitedData = fetch(...deps, abortController.signal);
 
             const data = await awaitedData;
 

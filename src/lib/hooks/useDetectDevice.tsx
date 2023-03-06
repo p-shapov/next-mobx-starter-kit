@@ -3,7 +3,7 @@ import UAParser from 'ua-parser-js';
 import { runInAction } from 'mobx';
 import { useLocalObservable } from 'mobx-react-lite';
 
-import screens from 'lib/styles/screens.module.scss';
+import screens from 'assets/styles/screens.module.scss';
 
 type DetectDeviceValue = {
   isMobile?: boolean;

@@ -1,0 +1,70 @@
+.root {
+  position: relative;
+
+  width: 658px;
+  height: max-content;
+  padding: 0 64px 71px;
+
+  background-color: $bg-primary;
+  border-radius: 30px;
+  opacity: 0;
+}
+
+.title {
+  display: inline-block;
+
+  margin: 32px 0 42px;
+
+  font-size: 3.6rem;
+  font-weight: 600;
+  line-height: 4.4rem;
+
+  color: $fg-primary;
+}
+
+.backdrop {
+  display: grid;
+
+  align-content: center;
+  justify-content: center;
+
+  height: 100%;
+
+  background-color: rgba(0 0 0 / 0);
+
+  &:not([data-enter]) {
+    transition: background-color 500ms ease-in;
+
+    transition: background-color 500ms ease-in, transform 500ms ease-in;
+  }
+
+  &:not([data-enter]) > .root {
+    transition: opacity 300ms ease-in;
+  }
+
+  &[data-enter] {
+    background-color: rgba(0 0 0 / 0.5);
+
+    transition: background-color 500ms ease-out;
+  }
+
+  &[data-enter] > .root {
+    opacity: 1;
+
+    transition: opacity 300ms ease-out;
+    transition-delay: 200ms;
+  }
+}
+
+.close {
+  position: absolute;
+  top: 32px;
+  right: 20px;
+
+  svg {
+    padding: 8px;
+
+    border: 1px solid currentcolor;
+    border-radius: 100%;
+  }
+}

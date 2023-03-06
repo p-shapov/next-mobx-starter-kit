@@ -2,13 +2,15 @@ import { FC, ReactNode } from 'react';
 
 import { useIsSsr } from 'lib/hooks';
 
-export type Props = {
+type ClientOnlyProps = {
   children: ReactNode;
   fallback?: ReactNode;
 };
 
-export const ClientOnly: FC<Props> = ({ children, fallback = null }) => {
+const ClientOnly: FC<ClientOnlyProps> = ({ children, fallback = null }) => {
   const isSsr = useIsSsr();
 
   return <>{!isSsr ? children : fallback}</>;
 };
+
+export { ClientOnly };

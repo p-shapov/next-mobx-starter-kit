@@ -18,6 +18,11 @@
         "groups": ["builtin", "external", "internal", ["parent", "sibling", "index"]],
         "pathGroups": [
           {
+            "pattern": "assets/**",
+            "group": "parent",
+            "position": "before"
+          },
+          {
             "pattern": "lib/**",
             "group": "parent",
             "position": "before"

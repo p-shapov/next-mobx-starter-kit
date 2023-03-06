@@ -1,4 +1,4 @@
-import { Button as BaseButton } from 'reakit/Button';
+import { Button as BaseButton } from 'ariakit/Button';
 import { forwardRef, type ReactElement, type MouseEventHandler } from 'react';
 import classNames from 'classnames';
 
@@ -7,7 +7,7 @@ import { Link } from 'lib/components';
 
 import styles from './Button.module.scss';
 
-export type ButtonLinkProps = LinkItem & {
+type ButtonLinkProps = LinkItem & {
   icon?: ReactElement;
   tabIndex?: number;
   stretch?: boolean;
@@ -18,7 +18,7 @@ export type ButtonLinkProps = LinkItem & {
   onClick?: MouseEventHandler<HTMLAnchorElement>;
 };
 
-export const ButtonLink = forwardRef<HTMLAnchorElement, ButtonLinkProps>(
+const ButtonLink = forwardRef<HTMLAnchorElement, ButtonLinkProps>(
   ({ text, icon, stretch, uppercase, ...rest }, ref) => {
     return (
       <BaseButton
@@ -37,3 +37,5 @@ export const ButtonLink = forwardRef<HTMLAnchorElement, ButtonLinkProps>(
     );
   },
 );
+
+export { ButtonLink, type ButtonLinkProps };
