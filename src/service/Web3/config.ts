@@ -26,7 +26,12 @@ const web3Connectors = {
       jsonRpcUrl: `https://eth-mainnet.alchemyapi.io/v2/${Env.ALCHEMY_API_KEY}`,
     },
   }),
-  walletConnect: new WalletConnectConnector({ chains, options: { qrcode: true } }),
+  walletConnect: new WalletConnectConnector({
+    chains,
+    options: {
+      projectId: Env.WALLETCONNECT_PROJECT_ID,
+    },
+  }),
 };
 
 const web3Config: ClientConfig = {

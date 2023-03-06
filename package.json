@@ -12,7 +12,7 @@
     "stylelint:fix": "stylelint --fix --config .stylelintrc \"./**/*.scss\""
   },
   "dependencies": {
-    "@wagmi/core": "^0.9.7",
+    "@wagmi/core": "^0.10.0",
     "ariakit": "^2.0.0-next.43",
     "axios": "^0.27.2",
     "classnames": "^2.3.1",

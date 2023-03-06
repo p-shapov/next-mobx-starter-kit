@@ -1,11 +1,11 @@
 .root {
   display: grid;
 
+  grid-template-columns: max-content;
+
   row-gap: 35px;
 
   justify-content: center;
-
-  grid-template-columns: max-content;
 
   li {
     width: 100%;
