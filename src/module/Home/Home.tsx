@@ -20,8 +20,7 @@ import { saleLink } from './constants';
 import styles from './Home.module.scss';
 
 const Orbit = inject(OrbitComponent)(Wallet, (wallet) => ({
-  connection: wallet.connect.data,
-  connected: map(wallet.address, (address) => !!address).data.value,
+  toTheMoon: map(wallet.address, (address) => !!address).data.value,
 }));
 
 const ConnectButton = inject(ConnectButtonComponent)(Wallet, (wallet) => ({
