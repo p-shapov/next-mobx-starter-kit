@@ -3,12 +3,12 @@
 
   position: fixed;
   top: 25vh;
-  right: calc(-100% + 42vw);
+  right: calc(-100% + 42vw - var(--scroll-width, 0px));
   z-index: 0;
 
   display: grid;
 
-  width: 118vw;
+  width: calc(118vw - var(--scroll-width, 0px));
 
   pointer-events: none;
 }
@@ -20,7 +20,8 @@
   z-index: 0;
   z-index: -1;
 
-  width: 59vw;
+  /* stylelint-disable-next-line length-zero-no-unit */
+  width: var(59vw - var(--scroll-width, 0px));
 
   pointer-events: none;
 
@@ -84,7 +85,7 @@
 .spaceship {
   position: absolute;
   top: 20vh;
-  left: 20vw;
+  left: calc(20vw - var(--scroll-width, 0px));
   z-index: 0;
 
   display: grid;
