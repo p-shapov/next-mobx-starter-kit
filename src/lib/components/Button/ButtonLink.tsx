@@ -1,4 +1,4 @@
-import { Button as BaseButton } from 'ariakit/Button';
+import { Button as BaseButton } from 'ariakit';
 import { forwardRef, type ReactElement, type MouseEventHandler } from 'react';
 import classNames from 'classnames';
 

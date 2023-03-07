@@ -1,5 +1,5 @@
 import { forwardRef, MouseEventHandler, type MouseEvent } from 'react';
-import { Menu as BaseMenu, MenuButton as BaseMenuButton, MenuItem, useMenuState } from 'ariakit/Menu';
+import { Menu as BaseMenu, MenuButton as BaseMenuButton, MenuItem, useMenuState } from 'ariakit';
 
 import { Button, ButtonLink, type ButtonProps, type ButtonLinkProps } from 'lib/components';
 

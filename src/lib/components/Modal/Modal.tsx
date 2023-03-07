@@ -1,5 +1,5 @@
 import { type ReactNode, type FC } from 'react';
-import { Dialog, DialogDismiss, DialogHeading, useDialogState, type DialogState } from 'ariakit/dialog';
+import { Dialog, DialogDismiss, DialogHeading, useDialogState, type DialogState } from 'ariakit';
 
 import { Close_SVG } from 'lib/icons';
 

@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { Heading } from 'ariakit/heading';
+import { Heading } from 'ariakit';
 
 import type { NextPageWithLayout } from 'lib/types/common';
 import { inject } from 'lib/hocs';
