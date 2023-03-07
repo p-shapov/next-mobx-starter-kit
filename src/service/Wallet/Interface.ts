@@ -1,7 +1,7 @@
 import type { Address } from '@wagmi/core';
 
 import type { Action } from 'service/Action';
-import type { MappedDatapoint } from 'service/Datapoint/utils';
+import type { MappedDatapoint } from 'service/Datapoint/types';
 import type { ConnectorName } from 'service/Web3/types';
 
 export interface IWallet {

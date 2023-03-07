@@ -6,6 +6,6 @@ const Sale: NextPageWithLayout = () => {
   return null;
 };
 
-Sale.getLayout = (page) => <BaseLayout gradient="linear">{page}</BaseLayout>;
+Sale.getLayout = (page) => <BaseLayout content={page} />;
 
 export { Sale };
