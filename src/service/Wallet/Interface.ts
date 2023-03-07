@@ -1,12 +1,11 @@
 import type { Address } from '@wagmi/core';
 
 import type { Action } from 'service/Action';
-import type { MappedDatapoint } from 'service/Datapoint/types';
+import type { Datapoint } from 'service/Datapoint';
 import type { ConnectorName } from 'service/Web3/types';
 
 export interface IWallet {
-  connect: Action<void, [ConnectorName], true>;
+  address: Datapoint<Address | undefined>;
+  connect: Action<void, [wallet: ConnectorName], true>;
   disconnect: Action<void>;
-  address: MappedDatapoint<Address | undefined>;
-  connected: MappedDatapoint<boolean>;
 }

@@ -3,25 +3,24 @@ import { type Address } from '@wagmi/core';
 import { AnimatePresence, motion } from 'framer-motion';
 import { observer } from 'mobx-react-lite';
 
-import { Button, ClientOnly, Menu, type ModalProps, useModalState } from 'lib/components';
+import { Button, Menu, type ModalProps, useModalState } from 'lib/components';
 import { trim } from 'lib/utils';
-import type { LinkItem } from 'lib/types/common';
+import type { FetchData, LinkItem } from 'lib/types/common';
 
-import { type Action } from 'service/Action';
-import type { MappedDatapoint } from 'service/Datapoint/types';
-import type { MappedAction } from 'service/Action/types';
+import type { ConnectorName } from 'service/Web3/types';
 
 type AccountButtonProps = {
-  Modal: FC<Pick<ModalProps, 'state'>>;
-  connect: MappedAction<void>;
-  disconnect: Action<void>;
-  address: MappedDatapoint<Address | undefined>;
+  Modal: FC<Pick<ModalProps, 'state'> & Pick<AccountButtonProps, 'connection' | 'onConnect'>>;
+  address: FetchData<Address | undefined>;
+  connection: FetchData<void>;
+  disconnection: FetchData<void>;
   links: Array<LinkItem>;
-  onDisconnect?(): void;
+  onConnect(connectorName: ConnectorName): Promise<void>;
+  onDisconnect(): Promise<void>;
 };
 
 const AccountButton: FC<AccountButtonProps> = observer(
-  ({ Modal, connect, disconnect, address, links, onDisconnect }) => {
+  ({ Modal, address, connection, disconnection, links, onConnect, onDisconnect }) => {
     const modalState = useModalState();
 
     const [autoFocusEnabled, setAutoFocusEnabled] = useState(false);
@@ -29,38 +28,37 @@ const AccountButton: FC<AccountButtonProps> = observer(
     const [autoFocusWalletMenu, setAutoFocusWalletMenu] = useState(false);
 
     useEffect(() => {
-      if (address.data.value && autoFocusEnabled) {
+      if (address.value && autoFocusEnabled) {
         setAutoFocusWalletButton(false);
         setAutoFocusWalletMenu(true);
         setAutoFocusEnabled(false);
       }
-    }, [address.data.value, autoFocusEnabled]);
+    }, [address.value, autoFocusEnabled]);
 
     const handleFocusWrapper = () => {
       setAutoFocusEnabled(true);
     };
 
     const handleClickDisconnectButton = async () => {
-      await disconnect.send();
+      await onDisconnect();
       setAutoFocusWalletButton(true);
       setAutoFocusWalletMenu(false);
-      onDisconnect?.();
     };
 
     return (
-      <ClientOnly>
+      <>
         <div onFocus={handleFocusWrapper}>
-          <AnimatePresence mode="wait" initial={address.data.status !== 'Succeed'}>
-            {address.data.value ? (
+          <AnimatePresence mode="wait" initial={address.status !== 'Succeed'}>
+            {address.value ? (
               <motion.div
                 key="address"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
+                transition={{ duration: 0.5 }}
               >
                 <Menu
-                  text={trim(address.data.value, 5, 4)}
+                  text={trim(address.value, 5, 4)}
                   label="open header menu"
                   title="header menu"
                   autoFocus={autoFocusWalletMenu}
@@ -68,34 +66,36 @@ const AccountButton: FC<AccountButtonProps> = observer(
                     ...links,
                     {
                       text: 'disconnect',
-                      loading: disconnect.data.status === 'Loading',
+                      loading: disconnection.status === 'Loading',
                       onClick: handleClickDisconnectButton,
                     },
                   ]}
                 />
               </motion.div>
             ) : (
-              <motion.div
-                key="connect"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-              >
-                <Button
-                  text="Connect wallet"
-                  onClick={modalState.toggle}
-                  autoFocus={autoFocusWalletButton}
-                  loading={connect.data.status === 'Loading'}
-                  uppercase
-                />
-              </motion.div>
+              connection.status !== 'Idle' && (
+                <motion.div
+                  key="connect"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <Button
+                    text="Connect wallet"
+                    onClick={modalState.toggle}
+                    autoFocus={autoFocusWalletButton}
+                    loading={connection.status === 'Loading'}
+                    uppercase
+                  />
+                </motion.div>
+              )
             )}
           </AnimatePresence>
         </div>
 
-        <Modal state={modalState} />
-      </ClientOnly>
+        <Modal state={modalState} connection={connection} onConnect={onConnect} />
+      </>
     );
   },
 );

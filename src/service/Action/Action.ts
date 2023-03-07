@@ -55,7 +55,7 @@ class Action<T, D extends Array<unknown> = [], I extends boolean = false> {
 
   constructor(private params: ActionParameters<T, D, I>) {
     makeObservable(this, {
-      data: observable,
+      data: observable.deep,
       send: action,
     });
   }

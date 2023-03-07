@@ -14,11 +14,11 @@ const instanceCache = new Map<
 
 function InjectDatapointFactory<T, D extends Array<unknown>>(params: DatapointParameters<T, D>): Function;
 function InjectDatapointFactory<T, D extends Array<unknown>>(
-  token: Token<AbstractFactory<[() => D], Datapoint<T, D>>> | DatapointParameters<T, D>,
+  token: Token<AbstractFactory<[() => D], Datapoint<T, D>>> | DatapointParameters<T, D> | undefined,
   params: DatapointParameters<T, D>,
 ): Function;
 function InjectDatapointFactory<T, D extends Array<unknown>>(
-  tokenOrParams: Token<AbstractFactory<[() => D], Datapoint<T, D>>> | DatapointParameters<T, D>,
+  tokenOrParams: Token<AbstractFactory<[() => D], Datapoint<T, D>>> | DatapointParameters<T, D> | undefined,
   params?: DatapointParameters<T, D>,
 ): Function {
   return (object: Constructable<unknown>, propertyName: string, index?: number) => {

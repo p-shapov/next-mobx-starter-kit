@@ -64,7 +64,7 @@ class Datapoint<T, D extends Array<unknown> = []> {
 
   constructor(private params: DatapointParameters<T, D>) {
     makeObservable(this, {
-      data: observable,
+      data: observable.deep,
       refetch: action,
     });
 

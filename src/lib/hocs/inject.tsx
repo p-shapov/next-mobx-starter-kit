@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { observer } from 'mobx-react-lite';
 import type { FC } from 'react';
 import { Container, Token, type Constructable } from 'typedi';
 
@@ -11,7 +12,7 @@ export const inject = <T,>(Component: FC<T>) => {
     const service: D extends Token<infer U> ? U : D extends Constructable<infer U> ? U : never =
       Container.get(identifier as any);
 
-    return (rest) => <Component {...rest} {...(map(service) as any)} />;
+    return observer((rest) => <Component {...rest} {...(map(service) as any)} />);
   }
 
   return makeComponent;

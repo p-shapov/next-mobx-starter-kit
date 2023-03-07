@@ -16,6 +16,4 @@ export type DatapointController<T, D extends Array<unknown> = []> = {
   token?: Token<Datapoint<T, D>>;
 };
 
-export type MappedDatapoint<T> = Pick<Datapoint<T>, 'data'>;
-
-export type CombinedDatapoint<T, K> = MappedDatapoint<[T, K]>;
+export type MappedDatapoint<T, D extends Array<unknown> = []> = Pick<Datapoint<T, D>, 'data' | 'refetch'>;

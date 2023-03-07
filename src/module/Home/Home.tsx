@@ -1,28 +1,33 @@
 import { useRouter } from 'next/router';
 import { Heading } from 'ariakit';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import type { NextPageWithLayout } from 'lib/types/common';
 import { inject } from 'lib/hocs';
 import { MetalampLogo_SVG } from 'lib/icons';
 
 import { Wallet } from 'service/Wallet';
+import { map } from 'service/Datapoint/utils';
 
 import { ConnectButton as ConnectButtonComponent } from 'view/ConnectButton';
 import { WhitelistButton } from 'view/WhitelistButton';
+import { WalletModal } from 'view/WalletModal';
+import { Orbit as OrbitComponent } from 'view/Orbit';
 
-import { BaseLayout, WalletModal } from 'layout/BaseLayout';
+import { BaseLayout } from 'layout/BaseLayout';
 
 import { saleLink } from './constants';
-import { Orbit as OrbitComponent } from './Orbit';
 import styles from './Home.module.scss';
 
 const Orbit = inject(OrbitComponent)(Wallet, (wallet) => ({
-  connected: wallet.connected,
+  connection: wallet.connect.data,
+  connected: map(wallet.address, (address) => !!address).data.value,
 }));
 
 const ConnectButton = inject(ConnectButtonComponent)(Wallet, (wallet) => ({
-  connect: wallet.connect,
-  connected: wallet.connected,
+  connection: wallet.connect.data,
+  connected: map(wallet.address, (address) => !!address).data.value,
+  onConnect: wallet.connect.send,
 }));
 
 const Home: NextPageWithLayout = () => {
@@ -53,7 +58,16 @@ const Home: NextPageWithLayout = () => {
         <WhitelistButton />
       </div>
 
-      <Orbit />
+      <AnimatePresence mode="wait">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Orbit />
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 };

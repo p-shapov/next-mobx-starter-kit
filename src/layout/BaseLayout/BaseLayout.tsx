@@ -11,7 +11,7 @@ import { MetalampLogo_SVG } from 'lib/icons';
 
 import { Wallet } from 'service/Wallet';
 
-import { WalletModal as WalletModalComponent } from 'view/WalletModal';
+import { WalletModal } from 'view/WalletModal';
 import { AccountButton as AccountButtonComponent } from 'view/AccountButton';
 
 import styles from './BaseLayout.module.scss';
@@ -22,24 +22,16 @@ type BaseLayoutProps = {
   gradient?: 'diagonal' | 'linear';
 };
 
-const WalletModal = inject(WalletModalComponent)(Wallet, (wallet) => ({
-  connect: wallet.connect,
-}));
-
 const AccountButton = inject(AccountButtonComponent)(Wallet, (wallet) => ({
-  connect: wallet.connect,
-  disconnect: wallet.disconnect,
-  address: wallet.address,
+  address: wallet.address.data,
+  connection: wallet.connect.data,
+  disconnection: wallet.disconnect.data,
+  onConnect: wallet.connect.send,
+  onDisconnect: wallet.disconnect.send,
 }));
 
 const BaseLayout: FC<BaseLayoutProps> = ({ content, gradient = 'diagonal' }) => {
   const router = useRouter();
-
-  const handleDisconnect = () => {
-    if (router.pathname.includes('sale')) {
-      router.replace('/');
-    }
-  };
 
   return (
     <>
@@ -102,7 +94,6 @@ const BaseLayout: FC<BaseLayoutProps> = ({ content, gradient = 'diagonal' }) => 
               <AccountButton
                 Modal={WalletModal}
                 links={accountLinks.map((link) => ({ ...link, current: link.href === router.pathname }))}
-                onDisconnect={handleDisconnect}
               />
             </div>
           </div>
@@ -126,4 +117,4 @@ const BaseLayout: FC<BaseLayoutProps> = ({ content, gradient = 'diagonal' }) => 
   );
 };
 
-export { BaseLayout, WalletModal };
+export { BaseLayout };

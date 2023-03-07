@@ -1,24 +1,28 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { DialogDismiss } from 'ariakit';
 
 import { Button, Modal, ModalProps } from 'lib/components';
 import { CoinbaseLogo_SVG, MetaMaskLogo_SVG, WalletConnectLogo_SVG } from 'lib/icons';
+import type { FetchData } from 'lib/types/common';
 
-import { type Action } from 'service/Action';
 import type { ConnectorName } from 'service/Web3/types';
 
 import styles from './WalletModal.module.scss';
 
 type WalletModalProps = Omit<ModalProps, 'children' | 'title'> & {
-  connect: Action<void, [ConnectorName], true>;
+  connection: FetchData<void>;
+  onConnect(connectorName: ConnectorName): Promise<void>;
 };
 
-const WalletModal: FC<WalletModalProps> = observer(({ connect, state, ...rest }) => {
-  const mkHandleClickConnect = (name: ConnectorName) => async () => {
-    await connect.send(name);
+const WalletModal: FC<WalletModalProps> = observer(({ state, connection, onConnect, ...rest }) => {
+  const [activeConnector, setActiveConnector] = useState<ConnectorName>();
 
-    if (connect.data.status === 'Succeed') state.hide();
+  const mkHandleClickConnect = (connectorName: ConnectorName) => async () => {
+    await onConnect(connectorName);
+
+    setActiveConnector(undefined);
+    state.hide();
   };
 
   return (
@@ -29,8 +33,10 @@ const WalletModal: FC<WalletModalProps> = observer(({ connect, state, ...rest })
             as={Button}
             text="MetaMask"
             icon={<MetaMaskLogo_SVG title="metaMask logo" width="3rem" height="2.6rem" />}
-            onClick={mkHandleClickConnect('metamask')}
+            loading={activeConnector === 'metamask' && connection.status === 'Loading'}
+            disabled={activeConnector !== 'metamask' && connection.status === 'Loading'}
             stretch
+            onClick={mkHandleClickConnect('metamask')}
           />
         </li>
         <li>
@@ -38,8 +44,10 @@ const WalletModal: FC<WalletModalProps> = observer(({ connect, state, ...rest })
             as={Button}
             text="Coinbase"
             icon={<CoinbaseLogo_SVG title="coinbase logo" width="2.4rem" height="2.4rem" />}
-            onClick={mkHandleClickConnect('coinbase')}
+            loading={activeConnector === 'walletConnect' && connection.status === 'Loading'}
+            disabled={activeConnector !== 'walletConnect' && connection.status === 'Loading'}
             stretch
+            onClick={mkHandleClickConnect('coinbase')}
           />
         </li>
         <li>
@@ -47,8 +55,10 @@ const WalletModal: FC<WalletModalProps> = observer(({ connect, state, ...rest })
             as={Button}
             text="WalletConnect"
             icon={<WalletConnectLogo_SVG title="walletConnect logo" width="2.4rem" height="2.2rem" />}
-            onClick={mkHandleClickConnect('walletConnect')}
+            loading={activeConnector === 'walletConnect' && connection.status === 'Loading'}
+            disabled={activeConnector !== 'walletConnect' && connection.status === 'Loading'}
             stretch
+            onClick={mkHandleClickConnect('walletConnect')}
           />
         </li>
       </ul>

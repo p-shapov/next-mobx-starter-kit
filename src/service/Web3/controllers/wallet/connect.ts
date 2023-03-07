@@ -6,7 +6,9 @@ import type { ActionController } from 'service/Action/types';
 import { network, web3Connectors } from 'service/Web3/config';
 import { ConnectorName } from 'service/Web3/types';
 
-const connectWallet: ActionController<ConnectResult, [ConnectorName]> = flow(function* (connectorName) {
+const connectWallet: ActionController<ConnectResult, [connectorName: ConnectorName]> = flow(function* (
+  connectorName,
+) {
   switch (connectorName) {
     case 'metamask':
       return yield connectMetamask();
