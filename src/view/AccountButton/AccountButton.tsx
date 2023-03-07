@@ -17,83 +17,87 @@ type AccountButtonProps = {
   disconnect: Action<void>;
   address: MappedDatapoint<Address | undefined>;
   links: Array<LinkItem>;
+  onDisconnect?(): void;
 };
 
-const AccountButton: FC<AccountButtonProps> = observer(({ Modal, connect, disconnect, address, links }) => {
-  const modalState = useModalState();
+const AccountButton: FC<AccountButtonProps> = observer(
+  ({ Modal, connect, disconnect, address, links, onDisconnect }) => {
+    const modalState = useModalState();
 
-  const [autoFocusEnabled, setAutoFocusEnabled] = useState(false);
-  const [autoFocusWalletButton, setAutoFocusWalletButton] = useState(false);
-  const [autoFocusWalletMenu, setAutoFocusWalletMenu] = useState(false);
+    const [autoFocusEnabled, setAutoFocusEnabled] = useState(false);
+    const [autoFocusWalletButton, setAutoFocusWalletButton] = useState(false);
+    const [autoFocusWalletMenu, setAutoFocusWalletMenu] = useState(false);
 
-  useEffect(() => {
-    if (address.data.value && autoFocusEnabled) {
-      setAutoFocusWalletButton(false);
-      setAutoFocusWalletMenu(true);
-      setAutoFocusEnabled(false);
-    }
-  }, [address.data.value, autoFocusEnabled]);
+    useEffect(() => {
+      if (address.data.value && autoFocusEnabled) {
+        setAutoFocusWalletButton(false);
+        setAutoFocusWalletMenu(true);
+        setAutoFocusEnabled(false);
+      }
+    }, [address.data.value, autoFocusEnabled]);
 
-  const handleFocusWrapper = () => {
-    setAutoFocusEnabled(true);
-  };
+    const handleFocusWrapper = () => {
+      setAutoFocusEnabled(true);
+    };
 
-  const handleClickMenuItem = async () => {
-    await disconnect.send();
-    setAutoFocusWalletButton(true);
-    setAutoFocusWalletMenu(false);
-  };
+    const handleClickDisconnectButton = async () => {
+      await disconnect.send();
+      setAutoFocusWalletButton(true);
+      setAutoFocusWalletMenu(false);
+      onDisconnect?.();
+    };
 
-  return (
-    <ClientOnly>
-      <div onFocus={handleFocusWrapper}>
-        <AnimatePresence mode="wait" initial={address.data.status !== 'Succeed'}>
-          {address.data.value ? (
-            <motion.div
-              key="address"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <Menu
-                text={trim(address.data.value, 5, 4)}
-                label="open header menu"
-                title="header menu"
-                autoFocus={autoFocusWalletMenu}
-                items={[
-                  ...links.map((link) => ({ ...link, onClick: handleClickMenuItem })),
-                  {
-                    text: 'disconnect',
-                    loading: disconnect.data.status === 'Loading',
-                    onClick: handleClickMenuItem,
-                  },
-                ]}
-              />
-            </motion.div>
-          ) : (
-            <motion.div
-              key="connect"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <Button
-                text="Connect wallet"
-                onClick={modalState.toggle}
-                autoFocus={autoFocusWalletButton}
-                loading={connect.data.status === 'Loading'}
-                uppercase
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+    return (
+      <ClientOnly>
+        <div onFocus={handleFocusWrapper}>
+          <AnimatePresence mode="wait" initial={address.data.status !== 'Succeed'}>
+            {address.data.value ? (
+              <motion.div
+                key="address"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <Menu
+                  text={trim(address.data.value, 5, 4)}
+                  label="open header menu"
+                  title="header menu"
+                  autoFocus={autoFocusWalletMenu}
+                  items={[
+                    ...links,
+                    {
+                      text: 'disconnect',
+                      loading: disconnect.data.status === 'Loading',
+                      onClick: handleClickDisconnectButton,
+                    },
+                  ]}
+                />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="connect"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <Button
+                  text="Connect wallet"
+                  onClick={modalState.toggle}
+                  autoFocus={autoFocusWalletButton}
+                  loading={connect.data.status === 'Loading'}
+                  uppercase
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
 
-      <Modal state={modalState} />
-    </ClientOnly>
-  );
-});
+        <Modal state={modalState} />
+      </ClientOnly>
+    );
+  },
+);
 
 export { AccountButton };

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import classNames from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
 import NextImage from 'next/image';
+import NextHead from 'next/head';
 
 import { Link } from 'lib/components';
 import { inject } from 'lib/hocs';
@@ -34,8 +35,24 @@ const AccountButton = inject(AccountButtonComponent)(Wallet, (wallet) => ({
 const BaseLayout: FC<BaseLayoutProps> = ({ content, gradient = 'diagonal' }) => {
   const router = useRouter();
 
+  const handleDisconnect = () => {
+    if (router.pathname.includes('sale')) {
+      router.replace('/');
+    }
+  };
+
   return (
     <>
+      <NextHead>
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#9465c6" />
+        <meta name="msapplication-TileColor" content="#9465c6" />
+        <meta name="theme-color" content="#000000" />
+      </NextHead>
+
       <AnimatePresence mode="popLayout">
         {gradient === 'diagonal' ? (
           <motion.div
@@ -85,6 +102,7 @@ const BaseLayout: FC<BaseLayoutProps> = ({ content, gradient = 'diagonal' }) => 
               <AccountButton
                 Modal={WalletModal}
                 links={accountLinks.map((link) => ({ ...link, current: link.href === router.pathname }))}
+                onDisconnect={handleDisconnect}
               />
             </div>
           </div>
