@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import classNames from 'classnames';
 import NextImage from 'next/image';
+import { observer } from 'mobx-react-lite';
 
 import { ReactComponent as RocketFlame_SVG } from 'public/icons/rocket_flame.svg';
 import { ReactComponent as Chart_SVG } from 'public/icons/chart.svg';
@@ -12,7 +13,7 @@ type OrbitProps = {
   toTheMoon?: boolean;
 };
 
-const Orbit: FC<OrbitProps> = ({ toTheMoon }) => {
+const Orbit: FC<OrbitProps> = observer(({ toTheMoon }) => {
   return (
     <>
       <div
@@ -49,6 +50,6 @@ const Orbit: FC<OrbitProps> = ({ toTheMoon }) => {
       </div>
     </>
   );
-};
+});
 
 export { Orbit };

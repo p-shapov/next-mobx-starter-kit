@@ -1,9 +1,10 @@
 import { useRouter } from 'next/router';
 import { Heading } from 'ariakit';
 import { AnimatePresence, motion } from 'framer-motion';
+import { observer } from 'mobx-react-lite';
 
 import type { NextPageWithLayout } from 'lib/types/common';
-import { inject } from 'lib/hocs';
+import { clientOnly, inject } from 'lib/hocs';
 import { MetalampLogo_SVG } from 'lib/icons';
 
 import { Wallet } from 'service/Wallet';
@@ -19,15 +20,19 @@ import { BaseLayout } from 'layout/BaseLayout';
 import { saleLink } from './constants';
 import styles from './Home.module.scss';
 
-const Orbit = inject(OrbitComponent)(Wallet, (wallet) => ({
-  toTheMoon: map(wallet.address, (address) => !!address).data.value,
-}));
+const Orbit = observer(
+  inject(clientOnly(OrbitComponent))(Wallet, (wallet) => ({
+    toTheMoon: map(wallet.address, (address) => !!address).data.value,
+  })),
+);
 
-const ConnectButton = inject(ConnectButtonComponent)(Wallet, (wallet) => ({
-  connection: wallet.connect.data,
-  connected: map(wallet.address, (address) => !!address).data.value,
-  onConnect: wallet.connect.send,
-}));
+const ConnectButton = observer(
+  inject(clientOnly(ConnectButtonComponent))(Wallet, (wallet) => ({
+    connection: wallet.connect.data,
+    connected: map(wallet.address, (address) => !!address).data.value,
+    onConnect: wallet.connect.send,
+  })),
+);
 
 const Home: NextPageWithLayout = () => {
   const router = useRouter();

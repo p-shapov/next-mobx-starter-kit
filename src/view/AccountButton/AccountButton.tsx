@@ -1,6 +1,7 @@
 import { useState, useEffect, type FC } from 'react';
 import { type Address } from '@wagmi/core';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
 
 import { Button, Menu, type ModalProps, useModalState } from 'lib/components';
@@ -15,17 +16,32 @@ type AccountButtonProps = {
   connection: FetchData<void>;
   disconnection: FetchData<void>;
   links: Array<LinkItem>;
+  redirectOnDisconnectHref?: string;
   onConnect(connectorName: ConnectorName): Promise<void>;
   onDisconnect(): Promise<void>;
 };
 
 const AccountButton: FC<AccountButtonProps> = observer(
-  ({ Modal, address, connection, disconnection, links, onConnect, onDisconnect }) => {
+  ({
+    Modal,
+    address,
+    connection,
+    disconnection,
+    links,
+    redirectOnDisconnectHref,
+    onConnect,
+    onDisconnect,
+  }) => {
     const modalState = useModalState();
+    const router = useRouter();
 
     const [autoFocusEnabled, setAutoFocusEnabled] = useState(false);
     const [autoFocusWalletButton, setAutoFocusWalletButton] = useState(false);
     const [autoFocusWalletMenu, setAutoFocusWalletMenu] = useState(false);
+
+    useEffect(() => {
+      if (!address.value && redirectOnDisconnectHref) router.replace('/');
+    }, [address.value, redirectOnDisconnectHref, router]);
 
     useEffect(() => {
       if (address.value && autoFocusEnabled) {

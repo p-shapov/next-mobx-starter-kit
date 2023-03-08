@@ -12,7 +12,7 @@ const network = Env.IS_TESTNET ? polygonMumbai : polygon;
 const { chains, provider, webSocketProvider } = configureChains([network], [publicProvider()]);
 
 const web3Connectors = {
-  metamask: new MetaMaskConnector({
+  metaMask: new MetaMaskConnector({
     chains,
     options: {
       shimDisconnect: true,
@@ -36,7 +36,7 @@ const web3Connectors = {
 
 const web3Config: ClientConfig = {
   autoConnect: true,
-  connectors: [web3Connectors.metamask, web3Connectors.coinbase, web3Connectors.walletConnect],
+  connectors: [web3Connectors.metaMask, web3Connectors.coinbase, web3Connectors.walletConnect],
   provider,
   webSocketProvider,
 };

@@ -4,9 +4,10 @@ import classNames from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
 import NextImage from 'next/image';
 import NextHead from 'next/head';
+import { observer } from 'mobx-react-lite';
 
 import { Link } from 'lib/components';
-import { inject } from 'lib/hocs';
+import { clientOnly, inject } from 'lib/hocs';
 import { MetalampLogo_SVG } from 'lib/icons';
 
 import { Wallet } from 'service/Wallet';
@@ -19,18 +20,21 @@ import { headerLinks, accountLinks, socialLinks } from './constants';
 
 type BaseLayoutProps = {
   content: ReactNode;
+  redirectOnDisconnectHref?: string;
   gradient?: 'diagonal' | 'linear';
 };
 
-const AccountButton = inject(AccountButtonComponent)(Wallet, (wallet) => ({
-  address: wallet.address.data,
-  connection: wallet.connect.data,
-  disconnection: wallet.disconnect.data,
-  onConnect: wallet.connect.send,
-  onDisconnect: wallet.disconnect.send,
-}));
+const AccountButton = observer(
+  inject(clientOnly(AccountButtonComponent))(Wallet, (wallet) => ({
+    address: wallet.address.data,
+    connection: wallet.connect.data,
+    disconnection: wallet.disconnect.data,
+    onConnect: wallet.connect.send,
+    onDisconnect: wallet.disconnect.send,
+  })),
+);
 
-const BaseLayout: FC<BaseLayoutProps> = ({ content, gradient = 'diagonal' }) => {
+const BaseLayout: FC<BaseLayoutProps> = ({ content, redirectOnDisconnectHref, gradient = 'diagonal' }) => {
   const router = useRouter();
 
   return (
@@ -94,6 +98,7 @@ const BaseLayout: FC<BaseLayoutProps> = ({ content, gradient = 'diagonal' }) => 
               <AccountButton
                 Modal={WalletModal}
                 links={accountLinks.map((link) => ({ ...link, current: link.href === router.pathname }))}
+                redirectOnDisconnectHref={redirectOnDisconnectHref}
               />
             </div>
           </div>

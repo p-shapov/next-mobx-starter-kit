@@ -1,6 +1,6 @@
 import { useEffect, useState, type FC } from 'react';
-import { observer } from 'mobx-react-lite';
 import { AnimatePresence, motion } from 'framer-motion';
+import { observer } from 'mobx-react-lite';
 
 import { ButtonLink, Button, type ModalProps, useModalState } from 'lib/components';
 import type { FetchData, LinkItem } from 'lib/types/common';

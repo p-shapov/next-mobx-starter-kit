@@ -7,6 +7,22 @@ const nextConfig = withSvgr({
   sassOptions: {
     additionalData: `@import "~src/assets/styles/index.scss";`,
   },
+  async redirects() {
+    return [
+      {
+        source: '/sale',
+        destination: '/',
+        missing: [
+          {
+            type: 'cookie',
+            key: 'connected',
+            value: 'false',
+          },
+        ],
+        permanent: true,
+      },
+    ];
+  },
 });
 
 module.exports = nextConfig;

@@ -16,6 +16,7 @@
     "ariakit": "^2.0.0-next.43",
     "axios": "^0.27.2",
     "classnames": "^2.3.1",
+    "cookie": "^0.5.0",
     "ethers": "^5.7.1",
     "framer-motion": "^10.0.2",
     "mobx": "^6.7.0",
@@ -26,12 +27,14 @@
     "reflect-metadata": "^0.1.13",
     "the-new-css-reset": "^1.7.3",
     "typedi": "^0.10.0",
+    "typescript-cookie": "^1.0.4",
     "ua-parser-js": "^1.0.33"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.1.2",
     "@commitlint/config-conventional": "^17.1.0",
     "@newhighsco/next-plugin-svgr": "^3.0.84",
+    "@types/cookie": "^0.5.1",
     "@types/node": "18.7.14",
     "@types/react": "18.0.18",
     "@types/react-dom": "18.0.6",

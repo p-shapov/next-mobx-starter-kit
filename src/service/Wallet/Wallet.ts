@@ -1,6 +1,9 @@
 import { Service } from 'typedi';
 import { type Address } from '@wagmi/core';
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, onBecomeObserved, runInAction } from 'mobx';
+import { setCookie } from 'typescript-cookie';
+
+import { isServer } from 'lib/utils';
 
 import { type Action, InjectAction } from 'service/Action';
 import { walletController } from 'service/Web3/controllers';
@@ -29,12 +32,27 @@ class Wallet implements IWallet {
   ) {
     makeAutoObservable(this);
 
-    web3Client.subscribe((state) => state.data?.account, this.address.refetch);
-
-    const connected = web3Client.storage.getItem('connected');
-
-    if (!connected) this.connect.data.status = 'Succeed';
+    if (!isServer) this.runConnectionAutoUpdate();
   }
+
+  private runConnectionAutoUpdate = () => {
+    const connected = !!web3Client.data?.account;
+
+    if (!connected) {
+      runInAction(() => {
+        this.connect.data.status = 'Succeed';
+      });
+    }
+
+    onBecomeObserved(this, 'address', () => {
+      web3Client.subscribe((state) => state.data?.account, this.address.set);
+    });
+
+    web3Client.subscribe(
+      (state) => !!state.data?.account,
+      (connected) => setCookie('connected', connected),
+    );
+  };
 }
 
 export { Wallet };

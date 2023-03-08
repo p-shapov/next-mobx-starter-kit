@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
-import { observer } from 'mobx-react-lite';
 import { DialogDismiss } from 'ariakit';
+import { observer } from 'mobx-react-lite';
 
 import { Button, Modal, ModalProps } from 'lib/components';
 import { CoinbaseLogo_SVG, MetaMaskLogo_SVG, WalletConnectLogo_SVG } from 'lib/icons';
@@ -33,10 +33,11 @@ const WalletModal: FC<WalletModalProps> = observer(({ state, connection, onConne
             as={Button}
             text="MetaMask"
             icon={<MetaMaskLogo_SVG title="metaMask logo" width="3rem" height="2.6rem" />}
-            loading={activeConnector === 'metamask' && connection.status === 'Loading'}
-            disabled={activeConnector !== 'metamask' && connection.status === 'Loading'}
+            loading={activeConnector === 'metaMask' && connection.status === 'Loading'}
+            disabled={activeConnector !== 'metaMask' && connection.status === 'Loading'}
             stretch
-            onClick={mkHandleClickConnect('metamask')}
+            autoFocus={false}
+            onClick={mkHandleClickConnect('metaMask')}
           />
         </li>
         <li>
@@ -47,6 +48,7 @@ const WalletModal: FC<WalletModalProps> = observer(({ state, connection, onConne
             loading={activeConnector === 'walletConnect' && connection.status === 'Loading'}
             disabled={activeConnector !== 'walletConnect' && connection.status === 'Loading'}
             stretch
+            autoFocus={false}
             onClick={mkHandleClickConnect('coinbase')}
           />
         </li>
@@ -58,6 +60,7 @@ const WalletModal: FC<WalletModalProps> = observer(({ state, connection, onConne
             loading={activeConnector === 'walletConnect' && connection.status === 'Loading'}
             disabled={activeConnector !== 'walletConnect' && connection.status === 'Loading'}
             stretch
+            autoFocus={false}
             onClick={mkHandleClickConnect('walletConnect')}
           />
         </li>

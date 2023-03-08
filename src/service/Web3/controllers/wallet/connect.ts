@@ -10,7 +10,7 @@ const connectWallet: ActionController<ConnectResult, [connectorName: ConnectorNa
   connectorName,
 ) {
   switch (connectorName) {
-    case 'metamask':
+    case 'metaMask':
       return yield connectMetamask();
     case 'coinbase':
       return yield connectCoinbase();
@@ -20,7 +20,7 @@ const connectWallet: ActionController<ConnectResult, [connectorName: ConnectorNa
 });
 
 const connectMetamask: ActionController<ConnectResult> = flow(function* () {
-  return yield connect({ connector: web3Connectors.metamask, chainId: network.id });
+  return yield connect({ connector: web3Connectors.metaMask, chainId: network.id });
 });
 
 connectMetamask.token = new Token();
