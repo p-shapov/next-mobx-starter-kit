@@ -16,10 +16,10 @@ const nextConfig = withSvgr({
           {
             type: 'cookie',
             key: 'connected',
-            value: 'false',
+            value: 'true',
           },
         ],
-        permanent: true,
+        permanent: false,
       },
     ];
   },
