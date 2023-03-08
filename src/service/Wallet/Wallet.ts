@@ -1,6 +1,6 @@
 import { Service } from 'typedi';
 import { type Address } from '@wagmi/core';
-import { makeAutoObservable, onBecomeObserved, runInAction } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import { setCookie } from 'typescript-cookie';
 
 import { isServer } from 'lib/utils';
@@ -38,15 +38,13 @@ class Wallet implements IWallet {
   private runConnectionAutoUpdate = () => {
     const connected = !!web3Client.data?.account;
 
-    if (!connected) {
+    if (connected) {
       runInAction(() => {
         this.connect.data.status = 'Succeed';
       });
     }
 
-    onBecomeObserved(this, 'address', () => {
-      web3Client.subscribe((state) => state.data?.account, this.address.set);
-    });
+    web3Client.subscribe((state) => state.data?.account, this.address.set);
 
     web3Client.subscribe(
       (state) => !!state.data?.account,

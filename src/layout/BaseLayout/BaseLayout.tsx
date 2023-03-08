@@ -13,7 +13,7 @@ import { MetalampLogo_SVG } from 'lib/icons';
 import { Wallet } from 'service/Wallet';
 
 import { WalletModal } from 'view/WalletModal';
-import { AccountButton as AccountButtonComponent } from 'view/AccountButton';
+import { AccountButton as AccountButtonComponent, AccountButtonFallback } from 'view/AccountButton';
 
 import styles from './BaseLayout.module.scss';
 import { headerLinks, accountLinks, socialLinks } from './constants';
@@ -25,7 +25,7 @@ type BaseLayoutProps = {
 };
 
 const AccountButton = observer(
-  inject(clientOnly(AccountButtonComponent))(Wallet, (wallet) => ({
+  inject(clientOnly(AccountButtonComponent, AccountButtonFallback))(Wallet, (wallet) => ({
     address: wallet.address.data,
     connection: wallet.connect.data,
     disconnection: wallet.disconnect.data,

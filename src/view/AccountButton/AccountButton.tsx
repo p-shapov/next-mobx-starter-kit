@@ -89,23 +89,21 @@ const AccountButton: FC<AccountButtonProps> = observer(
                 />
               </motion.div>
             ) : (
-              connection.status !== 'Idle' && (
-                <motion.div
-                  key="connect"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <Button
-                    text="Connect wallet"
-                    onClick={modalState.toggle}
-                    autoFocus={autoFocusWalletButton}
-                    loading={connection.status === 'Loading'}
-                    uppercase
-                  />
-                </motion.div>
-              )
+              <motion.div
+                key="connect"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <Button
+                  text="Connect wallet"
+                  onClick={modalState.toggle}
+                  autoFocus={autoFocusWalletButton}
+                  loading={connection.status === 'Loading'}
+                  uppercase
+                />
+              </motion.div>
             )}
           </AnimatePresence>
         </div>
@@ -116,4 +114,6 @@ const AccountButton: FC<AccountButtonProps> = observer(
   },
 );
 
-export { AccountButton };
+const AccountButtonFallback: FC = () => <Button text="Connect wallet" loading uppercase />;
+
+export { AccountButton, AccountButtonFallback };

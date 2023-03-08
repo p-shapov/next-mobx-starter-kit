@@ -10,7 +10,7 @@ import { MetalampLogo_SVG } from 'lib/icons';
 import { Wallet } from 'service/Wallet';
 import { map } from 'service/Datapoint/utils';
 
-import { ConnectButton as ConnectButtonComponent } from 'view/ConnectButton';
+import { ConnectButton as ConnectButtonComponent, ConnectButtonFallback } from 'view/ConnectButton';
 import { WhitelistButton } from 'view/WhitelistButton';
 import { WalletModal } from 'view/WalletModal';
 import { Orbit as OrbitComponent } from 'view/Orbit';
@@ -27,7 +27,7 @@ const Orbit = observer(
 );
 
 const ConnectButton = observer(
-  inject(clientOnly(ConnectButtonComponent))(Wallet, (wallet) => ({
+  inject(clientOnly(ConnectButtonComponent, ConnectButtonFallback))(Wallet, (wallet) => ({
     connection: wallet.connect.data,
     connected: map(wallet.address, (address) => !!address).data.value,
     onConnect: wallet.connect.send,

@@ -44,7 +44,7 @@ const ConnectButton: FC<ConnectButtonProps> = observer(
     return (
       <>
         <div className={styles['root']} onFocus={handleFocusWrapper}>
-          <AnimatePresence mode="wait" initial={connection.status !== 'Succeed'}>
+          <AnimatePresence mode="wait" initial={false}>
             {connected ? (
               <motion.div
                 key="link"
@@ -56,24 +56,22 @@ const ConnectButton: FC<ConnectButtonProps> = observer(
                 <ButtonLink {...link} text="Start minting" autoFocus={autoFocusLink} stretch uppercase />
               </motion.div>
             ) : (
-              connection.status !== 'Idle' && (
-                <motion.div
-                  key="connect"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <Button
-                    text="Connect wallet"
-                    onClick={handleClickConnectButton}
-                    autoFocus={autoFocusConnectButton}
-                    loading={connection.status === 'Loading'}
-                    stretch
-                    uppercase
-                  />
-                </motion.div>
-              )
+              <motion.div
+                key="connect"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <Button
+                  text="Connect wallet"
+                  onClick={handleClickConnectButton}
+                  autoFocus={autoFocusConnectButton}
+                  loading={connection.status === 'Loading'}
+                  stretch
+                  uppercase
+                />
+              </motion.div>
             )}
           </AnimatePresence>
         </div>
@@ -82,6 +80,12 @@ const ConnectButton: FC<ConnectButtonProps> = observer(
       </>
     );
   },
+);
+
+export const ConnectButtonFallback: FC = () => (
+  <div className={styles['root']}>
+    <Button text="Connect wallet" uppercase loading />
+  </div>
 );
 
 export { ConnectButton };
