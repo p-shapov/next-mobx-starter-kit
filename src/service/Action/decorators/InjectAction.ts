@@ -4,16 +4,14 @@ import { type Constructable, Token, Container } from 'typedi';
 import { type Action, mkAction } from '../Action';
 import type { ActionParameters } from '../types';
 
-function InjectAction<T, D extends Array<unknown>, I extends boolean = false>(
-  params: ActionParameters<T, D, I>,
+function InjectAction<T, D extends Array<unknown>>(params: ActionParameters<T, D>): Function;
+function InjectAction<T, D extends Array<unknown>>(
+  token: Token<Action<T, D>> | undefined,
+  params: ActionParameters<T, D>,
 ): Function;
-function InjectAction<T, D extends Array<unknown>, I extends boolean = false>(
-  token: Token<Action<T, D, I>> | undefined,
-  params: ActionParameters<T, D, I>,
-): Function;
-function InjectAction<T, D extends Array<unknown>, I extends boolean = false>(
-  tokenOrParams: Token<Action<T, D, I>> | ActionParameters<T, D, I> | undefined,
-  params?: ActionParameters<T, D, I>,
+function InjectAction<T, D extends Array<unknown>>(
+  tokenOrParams: Token<Action<T, D>> | ActionParameters<T, D> | undefined,
+  params?: ActionParameters<T, D>,
 ): Function {
   return (object: Constructable<unknown>, propertyName: string, index?: number) => {
     Container.registerHandler({
@@ -22,7 +20,7 @@ function InjectAction<T, D extends Array<unknown>, I extends boolean = false>(
       index,
       value: (containerInstance) => {
         if (params) {
-          let instance: Action<T, D, I>;
+          let instance: Action<T, D>;
 
           if (tokenOrParams instanceof Token && containerInstance.has(tokenOrParams)) {
             instance = containerInstance.get(tokenOrParams);
@@ -35,7 +33,7 @@ function InjectAction<T, D extends Array<unknown>, I extends boolean = false>(
           return instance;
         }
 
-        return mkAction(tokenOrParams as ActionParameters<T, D, I>);
+        return mkAction(tokenOrParams as ActionParameters<T, D>);
       },
     });
   };

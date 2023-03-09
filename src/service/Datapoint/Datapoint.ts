@@ -9,7 +9,7 @@ import {
   FlowCancellationError,
 } from 'mobx';
 
-import { fetchData, getErrorMessage, isServer } from 'lib/utils';
+import { fetchData, getError, isServer } from 'lib/utils';
 
 import type { DatapointParameters } from './types';
 
@@ -57,8 +57,11 @@ class Datapoint<T, D extends Array<unknown> = []> {
 
       runInAction(() => {
         this.data.status = 'Error';
-        this.data.error = getErrorMessage(error);
+        this.data.error = getError(error);
       });
+
+      // eslint-disable-next-line no-console
+      console.error(error);
     }
   };
 
@@ -79,7 +82,7 @@ class Datapoint<T, D extends Array<unknown> = []> {
 
     onBecomeObserved(this, 'data', () => {
       this.disposeDepsListener = reaction(
-        () => this.params.$deps?.(),
+        () => this.params.$deps?.() || [],
         async (deps) => {
           if (deps) {
             const { fetch } = this.params;
@@ -111,8 +114,11 @@ class Datapoint<T, D extends Array<unknown> = []> {
 
               runInAction(() => {
                 this.data.status = 'Error';
-                this.data.error = getErrorMessage(error);
+                this.data.error = getError(error);
               });
+
+              // eslint-disable-next-line no-console
+              console.error(error);
             }
           }
         },
@@ -164,8 +170,11 @@ class Datapoint<T, D extends Array<unknown> = []> {
 
             runInAction(() => {
               this.data.status = 'Error';
-              this.data.error = getErrorMessage(error);
+              this.data.error = getError(error);
             });
+
+            // eslint-disable-next-line no-console
+            console.error(error);
           }
         }, polling);
 

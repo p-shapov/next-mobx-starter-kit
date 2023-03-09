@@ -11,6 +11,30 @@ const nextConfig = withSvgr({
     return [
       {
         source: '/sale',
+        destination: '/sale/airdrop',
+        has: [
+          {
+            type: 'cookie',
+            key: 'connected',
+            value: 'true',
+          },
+        ],
+        permanent: false,
+      },
+      {
+        source: '/sale',
+        destination: '/',
+        missing: [
+          {
+            type: 'cookie',
+            key: 'connected',
+            value: 'true',
+          },
+        ],
+        permanent: false,
+      },
+      {
+        source: '/sale/:slug',
         destination: '/',
         missing: [
           {

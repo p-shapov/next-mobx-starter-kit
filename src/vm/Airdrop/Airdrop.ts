@@ -17,14 +17,20 @@ class Airdrop implements IAirdrop {
   whitelisted = this.whitelistedFactory.create(() => [[], this.wallet.address.data.value]);
 
   constructor(
-    @InjectDatapoint({ fetch: airdropController.getPhase })
+    @InjectDatapoint(airdropController.getPhase.token, {
+      fetch: airdropController.getPhase,
+    })
     public phase: Datapoint<SalePhase>,
-    @InjectDatapointFactory({ fetch: airdropController.getAllowedToMint })
+    @InjectDatapointFactory(airdropController.getAllowedToMint.token, {
+      fetch: airdropController.getAllowedToMint,
+    })
     private allowedToMintFactory: AbstractFactory<
       [() => [Address | undefined]],
       Datapoint<number | undefined, [address: Address | undefined]>
     >,
-    @InjectDatapointFactory({ fetch: airdropController.getWhitelisted })
+    @InjectDatapointFactory(airdropController.getWhitelisted.token, {
+      fetch: airdropController.getWhitelisted,
+    })
     private whitelistedFactory: AbstractFactory<
       [() => [whitelist: Array<Address>, address: Address | undefined]],
       Datapoint<boolean | undefined, [Address | undefined]>

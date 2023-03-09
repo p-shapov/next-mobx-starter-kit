@@ -1,6 +1,6 @@
 import { LinkItem } from 'lib/types/common';
 
 export const saleLink: LinkItem = {
-  href: './sale',
+  href: './sale/airdrop',
   text: 'Start Minting',
 };

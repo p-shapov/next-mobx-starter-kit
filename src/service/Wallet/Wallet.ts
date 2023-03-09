@@ -17,15 +17,11 @@ import { IWallet } from './Interface';
 class Wallet implements IWallet {
   address = mkDatapoint<Address | undefined>({
     fetch: async () => web3Client.data?.account,
-    $deps: () => [],
   });
 
   constructor(
-    @InjectAction({
-      fetch: walletController.connectWallet,
-      unprepared: true,
-    })
-    public connect: Action<void, [connectorName: ConnectorName], true>,
+    @InjectAction({ fetch: walletController.connectWallet })
+    public connect: Action<void, [connectorName: ConnectorName]>,
 
     @InjectAction({ fetch: walletController.disconnect })
     public disconnect: Action<void, []>,

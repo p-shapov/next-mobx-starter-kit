@@ -44,9 +44,11 @@
 .buttons {
   display: grid;
 
-  grid-auto-flow: column;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-flow: dense;
 
   column-gap: 20px;
 
-  width: max-content;
+  width: 447px;
+  min-width: max-content;
 }

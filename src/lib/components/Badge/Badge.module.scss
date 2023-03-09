@@ -1,0 +1,19 @@
+.root {
+  display: inline-block;
+
+  padding: 5px 20px;
+
+  font-size: 1.3rem;
+  line-height: 1.6rem;
+
+  border: 1px solid;
+  border-radius: 10px;
+
+  &--color_green {
+    border-color: $green;
+  }
+
+  &--color_violet {
+    border-color: $violet;
+  }
+}

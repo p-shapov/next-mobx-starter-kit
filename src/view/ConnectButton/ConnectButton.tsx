@@ -1,6 +1,7 @@
-import { useEffect, useState, type FC } from 'react';
+import { type FC } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { observer } from 'mobx-react-lite';
+import { DialogDisclosure } from 'ariakit';
 
 import { ButtonLink, Button, type ModalProps, useModalState } from 'lib/components';
 import type { FetchData, LinkItem } from 'lib/types/common';
@@ -19,32 +20,12 @@ type ConnectButtonProps = {
 
 const ConnectButton: FC<ConnectButtonProps> = observer(
   ({ Modal, connection, connected, link, onConnect }) => {
-    const [autoFocusEnabled, setAutoFocusEnabled] = useState(false);
-    const [autoFocusConnectButton, setAutoFocusConnectButton] = useState(false);
-    const [autoFocusLink, setAutoFocusLink] = useState(false);
-
-    const walletModal = useModalState();
-
-    useEffect(() => {
-      if (connected && autoFocusEnabled) {
-        setAutoFocusConnectButton(false);
-        setAutoFocusLink(true);
-        setAutoFocusEnabled(false);
-      }
-    }, [connected, autoFocusEnabled]);
-
-    const handleClickConnectButton = () => {
-      walletModal.show();
-    };
-
-    const handleFocusWrapper = () => {
-      setAutoFocusEnabled(true);
-    };
+    const modalState = useModalState();
 
     return (
       <>
-        <div className={styles['root']} onFocus={handleFocusWrapper}>
-          <AnimatePresence mode="wait" initial={false}>
+        <div className={styles['root']}>
+          <AnimatePresence mode="wait">
             {connected ? (
               <motion.div
                 key="link"
@@ -53,7 +34,7 @@ const ConnectButton: FC<ConnectButtonProps> = observer(
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                <ButtonLink {...link} text="Start minting" autoFocus={autoFocusLink} stretch uppercase />
+                <ButtonLink {...link} text="Start minting" stretch uppercase />
               </motion.div>
             ) : (
               <motion.div
@@ -61,12 +42,15 @@ const ConnectButton: FC<ConnectButtonProps> = observer(
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{
+                  duration: 0.5,
+                  delay: typeof modalState.animated === 'number' ? modalState.animated / 1000 : 0,
+                }}
               >
-                <Button
+                <DialogDisclosure
+                  as={Button}
+                  state={modalState}
                   text="Connect wallet"
-                  onClick={handleClickConnectButton}
-                  autoFocus={autoFocusConnectButton}
                   loading={connection.status === 'Loading'}
                   stretch
                   uppercase
@@ -76,16 +60,10 @@ const ConnectButton: FC<ConnectButtonProps> = observer(
           </AnimatePresence>
         </div>
 
-        <Modal state={walletModal} connection={connection} onConnect={onConnect} />
+        <Modal state={modalState} connection={connection} onConnect={onConnect} />
       </>
     );
   },
-);
-
-export const ConnectButtonFallback: FC = () => (
-  <div className={styles['root']}>
-    <Button text="Connect wallet" uppercase loading />
-  </div>
 );
 
 export { ConnectButton };

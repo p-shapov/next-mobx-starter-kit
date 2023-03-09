@@ -31,7 +31,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           [styles['root--uppercase']]: uppercase,
           [styles['root--loading']]: loading,
         })}
-        disabled={loading || disabled}
+        disabled={disabled}
       >
         {icon && <span className={styles['icon']}>{icon}</span>}
         <span className={styles['text']}>{text}</span>

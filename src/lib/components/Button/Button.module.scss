@@ -95,12 +95,16 @@
     }
   }
 
-  &:disabled:not(&--loading) {
+  &:disabled {
     opacity: 0.4;
   }
 
-  &--loading::before {
-    @include bg-gradient-highlight;
+  &--loading {
+    pointer-events: none;
+
+    &::before {
+      @include bg-gradient-highlight;
+    }
   }
 
   &:not(&--with-icon) {

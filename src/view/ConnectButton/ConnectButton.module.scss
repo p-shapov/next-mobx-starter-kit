@@ -1,4 +1,8 @@
 .root {
   width: 216px;
   min-width: max-content;
+
+  &--placeholder {
+    opacity: 0;
+  }
 }

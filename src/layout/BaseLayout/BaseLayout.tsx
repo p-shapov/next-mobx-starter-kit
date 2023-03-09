@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
 import NextImage from 'next/image';
 import NextHead from 'next/head';
-import { observer } from 'mobx-react-lite';
+import { pipe } from 'fp-ts/function';
 
 import { Link } from 'lib/components';
 import { clientOnly, inject } from 'lib/hocs';
@@ -13,7 +13,7 @@ import { MetalampLogo_SVG } from 'lib/icons';
 import { Wallet } from 'service/Wallet';
 
 import { WalletModal } from 'view/WalletModal';
-import { AccountButton as AccountButtonComponent, AccountButtonFallback } from 'view/AccountButton';
+import { AccountButton as AccountButtonView } from 'view/AccountButton';
 
 import styles from './BaseLayout.module.scss';
 import { headerLinks, accountLinks, socialLinks } from './constants';
@@ -24,8 +24,10 @@ type BaseLayoutProps = {
   gradient?: 'diagonal' | 'linear';
 };
 
-const AccountButton = observer(
-  inject(clientOnly(AccountButtonComponent, AccountButtonFallback))(Wallet, (wallet) => ({
+const AccountButton = pipe(
+  AccountButtonView,
+  clientOnly,
+  inject(Wallet, (wallet) => ({
     address: wallet.address.data,
     connection: wallet.connect.data,
     disconnection: wallet.disconnect.data,

@@ -73,12 +73,13 @@
   );
   border-radius: 50%;
 
-  transition: transform 2s ease-in;
+  transition: transform 5s ease-out;
 
   transform: rotateZ(0deg);
+  transform-origin: bottom right;
 
   &--moving-away {
-    transform: rotateZ(60deg);
+    transform: rotateZ(-45deg);
   }
 }
 

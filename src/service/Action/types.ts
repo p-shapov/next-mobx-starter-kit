@@ -4,14 +4,9 @@ import type { CancellableOrPromise } from 'lib/types/common';
 
 import type { Action } from './Action';
 
-export type MappedAction<T, D extends Array<unknown> = []> = Pick<
-  Action<T, D, true>,
-  'data' | 'send' | 'cancel'
->;
+export type MappedAction<T, D extends Array<unknown> = []> = Pick<Action<T, D>, 'data' | 'send' | 'cancel'>;
 
-export type ActionParameters<T, D extends Array<unknown> = [], I extends boolean = false> = {
-  deps?: D;
-  unprepared?: I;
+export type ActionParameters<T, D extends Array<unknown> = []> = {
   fetch(...args: [...deps: D, signal?: AbortSignal]): CancellableOrPromise<T>;
 };
 

@@ -1,35 +1,38 @@
 import { useRouter } from 'next/router';
 import { Heading } from 'ariakit';
 import { AnimatePresence, motion } from 'framer-motion';
-import { observer } from 'mobx-react-lite';
+import { pipe } from 'fp-ts/function';
 
 import type { NextPageWithLayout } from 'lib/types/common';
 import { clientOnly, inject } from 'lib/hocs';
 import { MetalampLogo_SVG } from 'lib/icons';
 
 import { Wallet } from 'service/Wallet';
-import { map } from 'service/Datapoint/utils';
 
-import { ConnectButton as ConnectButtonComponent, ConnectButtonFallback } from 'view/ConnectButton';
+import { ConnectButton as ConnectButtonView } from 'view/ConnectButton';
+import { Orbit as OrbitView } from 'view/Orbit';
 import { WhitelistButton } from 'view/WhitelistButton';
 import { WalletModal } from 'view/WalletModal';
-import { Orbit as OrbitComponent } from 'view/Orbit';
 
 import { BaseLayout } from 'layout/BaseLayout';
 
 import { saleLink } from './constants';
 import styles from './Home.module.scss';
 
-const Orbit = observer(
-  inject(clientOnly(OrbitComponent))(Wallet, (wallet) => ({
-    toTheMoon: map(wallet.address, (address) => !!address).data.value,
+const Orbit = pipe(
+  OrbitView,
+  clientOnly,
+  inject(Wallet, (wallet) => ({
+    toTheMoon: !!wallet.address.data.value,
   })),
 );
 
-const ConnectButton = observer(
-  inject(clientOnly(ConnectButtonComponent, ConnectButtonFallback))(Wallet, (wallet) => ({
+const ConnectButton = pipe(
+  ConnectButtonView,
+  clientOnly,
+  inject(Wallet, (wallet) => ({
     connection: wallet.connect.data,
-    connected: map(wallet.address, (address) => !!address).data.value,
+    connected: !!wallet.address.data.value,
     onConnect: wallet.connect.send,
   })),
 );
@@ -55,10 +58,12 @@ const Home: NextPageWithLayout = () => {
       </p>
 
       <div className={styles['buttons']}>
-        <ConnectButton
-          Modal={WalletModal}
-          link={{ ...saleLink, current: router.pathname === saleLink.href }}
-        />
+        <div>
+          <ConnectButton
+            Modal={WalletModal}
+            link={{ ...saleLink, current: router.pathname === saleLink.href }}
+          />
+        </div>
         <WhitelistButton />
       </div>
 

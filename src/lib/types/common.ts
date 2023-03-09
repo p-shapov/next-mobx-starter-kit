@@ -13,7 +13,7 @@ export type SalePhase = 'Soon' | 'Started' | 'Finished';
 export type FetchData<T> = {
   status: Status;
   value?: T;
-  error: string | null;
+  error: Error | null;
 };
 
 export type CancellableOrPromise<T> = CancellablePromise<T> | Promise<T>;

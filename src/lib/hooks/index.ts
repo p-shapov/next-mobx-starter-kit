@@ -1,4 +1,5 @@
 export * from './useInterval';
-export * from './useIsSsr';
+export * from './useMounted';
 export * from './useLogger';
 export * from './useTimeout';
+export * from './useInject';

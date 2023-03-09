@@ -10,16 +10,16 @@ type ModalProps = {
   children: ReactNode;
   title: string;
   autoFocus?: boolean;
-  outsideClickClose?: boolean;
+  disableOutsideClick?: boolean;
 };
 
-const Modal: FC<ModalProps> = ({ title, state, children, outsideClickClose = true }) => {
+const Modal: FC<ModalProps> = ({ title, state, children, disableOutsideClick = false }) => {
   return (
     <Dialog
       state={state}
       className={styles['root']}
       modal
-      hideOnInteractOutside={outsideClickClose}
+      hideOnInteractOutside={!disableOutsideClick}
       backdropProps={{
         className: styles['backdrop'],
       }}
