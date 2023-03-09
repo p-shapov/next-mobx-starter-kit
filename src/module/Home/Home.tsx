@@ -81,6 +81,6 @@ const Home: NextPageWithLayout = () => {
   );
 };
 
-Home.getLayout = (page) => <BaseLayout content={page} />;
+Home.getLayout = (page) => <BaseLayout content={page} title="To the MetaMoon" />;
 
 export { Home };

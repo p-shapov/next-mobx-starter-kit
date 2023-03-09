@@ -42,14 +42,16 @@ export const TabsLayout: FC<TabsLayoutProps> = ({ items }) => {
             badge,
             ...item
           }) => (
-            <Tab as={Button} key={item.href} id={item.href} className={styles['tabItem']}>
-              {title}
+            <span key={item.href} className={styles['tabItem']}>
+              <Tab as={Button} id={item.href} aria-describedby={`${item.href}-badge`}>
+                {title}
+              </Tab>
               {badge && (
-                <span className={styles['tabBadge']}>
+                <span id={`${item.href}-badge`} className={styles['tabBadge']}>
                   <Badge text={badge.text} color={badge.color} />
                 </span>
               )}
-            </Tab>
+            </span>
           ),
         )}
       </TabList>

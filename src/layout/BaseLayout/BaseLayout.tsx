@@ -6,6 +6,7 @@ import NextImage from 'next/image';
 import NextHead from 'next/head';
 import { pipe } from 'fp-ts/function';
 import { observer } from 'mobx-react-lite';
+import { Heading, HeadingLevel, VisuallyHidden } from 'ariakit';
 
 import { Link } from 'lib/components';
 import { clientOnly, inject } from 'lib/hocs';
@@ -22,6 +23,7 @@ import { headerLinks, accountLinks, socialLinks } from './constants';
 
 type BaseLayoutProps = {
   content: ReactNode;
+  title: string;
   gradient?: 'diagonal' | 'linear';
 };
 
@@ -37,7 +39,7 @@ const AccountButton = pipe(
   })),
 );
 
-const BaseLayout: FC<BaseLayoutProps> = observer(({ content, gradient = 'diagonal' }) => {
+const BaseLayout: FC<BaseLayoutProps> = observer(({ content, title, gradient = 'diagonal' }) => {
   const router = useRouter();
   const wallet = useInject(Wallet);
 
@@ -61,6 +63,8 @@ const BaseLayout: FC<BaseLayoutProps> = observer(({ content, gradient = 'diagona
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#9465c6" />
         <meta name="msapplication-TileColor" content="#9465c6" />
         <meta name="theme-color" content="#000000" />
+
+        <title>{title}</title>
       </NextHead>
 
       <AnimatePresence mode="popLayout">
@@ -87,50 +91,59 @@ const BaseLayout: FC<BaseLayoutProps> = observer(({ content, gradient = 'diagona
         )}
       </AnimatePresence>
 
-      <div className={styles['root']}>
-        <header className={styles['header']}>
-          <span className={styles['logo']}>
-            <Link href="/" current={router.pathname === '/'}>
-              <MetalampLogo_SVG title="Metalamp logo" width={92} height={98} />
-            </Link>
-          </span>
+      <HeadingLevel>
+        <div className={styles['root']}>
+          <header className={styles['header']}>
+            <span className={styles['logo']}>
+              <Link href="/" current={router.pathname === '/'}>
+                <MetalampLogo_SVG title="Go to home" width={92} height={98} />
+              </Link>
+            </span>
 
-          <div className={styles['links']}>
-            <nav>
-              <ul>
-                {headerLinks.map(({ text, ...rest }, idx) => (
-                  <li key={idx}>
-                    <Link {...rest} current={rest.href === router.pathname}>
-                      {text}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+            <div className={styles['links']}>
+              <nav>
+                <ul>
+                  {headerLinks.map(({ text, ...rest }, idx) => (
+                    <li key={idx}>
+                      <Link {...rest} current={rest.href === router.pathname}>
+                        {text}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
 
-            <div className={styles['wallet']}>
-              <AccountButton
-                Modal={WalletModal}
-                links={accountLinks.map((link) => ({ ...link, current: link.href === router.pathname }))}
-              />
+              <div className={styles['wallet']}>
+                <AccountButton
+                  Modal={WalletModal}
+                  links={accountLinks.map((link) => ({ ...link, current: link.href === router.pathname }))}
+                />
+              </div>
             </div>
-          </div>
-        </header>
+          </header>
 
-        <main className={styles['main']}>{content}</main>
+          <main className={styles['main']}>{content}</main>
 
-        <footer>
-          <ul className={styles['socials']}>
-            {socialLinks.map(({ alt, src, href }, idx) => (
-              <li key={idx}>
-                <Link href={href} external>
-                  <NextImage src={src} alt={alt} width={40} height={40} quality={100} priority />
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </footer>
-      </div>
+          <footer>
+            <section>
+              <HeadingLevel>
+                <VisuallyHidden>
+                  <Heading>Social media</Heading>
+                </VisuallyHidden>
+                <ul className={styles['socials']}>
+                  {socialLinks.map(({ alt, src, href }, idx) => (
+                    <li key={idx}>
+                      <Link href={href} external>
+                        <NextImage src={src} alt={alt} width={40} height={40} quality={100} priority />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </HeadingLevel>
+            </section>
+          </footer>
+        </div>
+      </HeadingLevel>
     </>
   );
 });

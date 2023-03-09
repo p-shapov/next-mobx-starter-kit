@@ -45,8 +45,7 @@ const AccountButton: FC<AccountButtonProps> = observer(
             >
               <Menu
                 text={trim(address.value, 5, 4)}
-                label="open header menu"
-                title="header menu"
+                label="account"
                 items={[
                   ...links,
                   {

@@ -11,15 +11,15 @@ type ButtonLinkItem = Omit<ButtonLinkProps, 'icon' | 'focusable' | 'uppercase' |
 type MenuProps = Omit<ButtonProps, 'onClick'> & {
   text: string;
   label?: string;
-  title?: string;
   items: Array<ButtonItem | ButtonLinkItem>;
 };
 
-const Menu = forwardRef<HTMLButtonElement, MenuProps>(({ title, label, items, ...rest }, ref) => {
+const Menu = forwardRef<HTMLButtonElement, MenuProps>(({ label, items, ...rest }, ref) => {
   const menu = useMenuState({
     placement: 'bottom-end',
     animated: 500,
     gutter: 14,
+    focusLoop: true,
   });
 
   const mkHandleClickMenuItem =
@@ -35,7 +35,7 @@ const Menu = forwardRef<HTMLButtonElement, MenuProps>(({ title, label, items, ..
     <div className={styles['root']}>
       <BaseMenuButton {...rest} ref={ref} state={menu} as={Button} aria-label={label} />
 
-      <BaseMenu state={menu} className={styles['dialog']} aria-label={title}>
+      <BaseMenu state={menu} className={styles['dialog']}>
         <div className={styles['content']}>
           {items.map((item, idx) =>
             'href' in item ? (
@@ -44,7 +44,6 @@ const Menu = forwardRef<HTMLButtonElement, MenuProps>(({ title, label, items, ..
                 state={menu}
                 key={idx}
                 as={ButtonLink}
-                aria-label={title}
                 stretch
                 uppercase
                 onClick={mkHandleClickMenuItem(item)}
@@ -55,7 +54,6 @@ const Menu = forwardRef<HTMLButtonElement, MenuProps>(({ title, label, items, ..
                 state={menu}
                 key={idx}
                 as={Button}
-                aria-label={title}
                 stretch
                 uppercase
                 onClick={mkHandleClickMenuItem(item)}
