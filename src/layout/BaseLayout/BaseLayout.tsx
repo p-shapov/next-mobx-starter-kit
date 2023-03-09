@@ -1,14 +1,16 @@
-import { type ReactNode, FC } from 'react';
+import { type ReactNode, FC, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
 import NextImage from 'next/image';
 import NextHead from 'next/head';
 import { pipe } from 'fp-ts/function';
+import { observer } from 'mobx-react-lite';
 
 import { Link } from 'lib/components';
 import { clientOnly, inject } from 'lib/hocs';
 import { MetalampLogo_SVG } from 'lib/icons';
+import { useInject } from 'lib/hooks';
 
 import { Wallet } from 'service/Wallet';
 
@@ -20,7 +22,6 @@ import { headerLinks, accountLinks, socialLinks } from './constants';
 
 type BaseLayoutProps = {
   content: ReactNode;
-  redirectOnDisconnectHref?: string;
   gradient?: 'diagonal' | 'linear';
 };
 
@@ -36,8 +37,19 @@ const AccountButton = pipe(
   })),
 );
 
-const BaseLayout: FC<BaseLayoutProps> = ({ content, redirectOnDisconnectHref, gradient = 'diagonal' }) => {
+const BaseLayout: FC<BaseLayoutProps> = observer(({ content, gradient = 'diagonal' }) => {
   const router = useRouter();
+  const wallet = useInject(Wallet);
+
+  useEffect(() => {
+    if (
+      !wallet.address.data.value &&
+      wallet.disconnect.data.status === 'Succeed' &&
+      router.pathname !== '/'
+    ) {
+      router.replace('/');
+    }
+  }, [router, wallet.address.data.value, wallet.disconnect.data.status]);
 
   return (
     <>
@@ -100,7 +112,6 @@ const BaseLayout: FC<BaseLayoutProps> = ({ content, redirectOnDisconnectHref, gr
               <AccountButton
                 Modal={WalletModal}
                 links={accountLinks.map((link) => ({ ...link, current: link.href === router.pathname }))}
-                redirectOnDisconnectHref={redirectOnDisconnectHref}
               />
             </div>
           </div>
@@ -122,6 +133,6 @@ const BaseLayout: FC<BaseLayoutProps> = ({ content, redirectOnDisconnectHref, gr
       </div>
     </>
   );
-};
+});
 
 export { BaseLayout };

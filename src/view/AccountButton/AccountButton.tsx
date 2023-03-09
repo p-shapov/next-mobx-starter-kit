@@ -1,14 +1,12 @@
-import { useEffect, type FC } from 'react';
 import { type Address } from '@wagmi/core';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useRouter } from 'next/router';
 import { observer } from 'mobx-react-lite';
 import { DialogDisclosure } from 'ariakit';
+import { type FC } from 'react';
 
 import { Button, Menu, type ModalProps, useModalState } from 'lib/components';
 import { trim } from 'lib/utils';
 import type { FetchData, LinkItem } from 'lib/types/common';
-import { useMounted } from 'lib/hooks';
 
 import type { ConnectorName } from 'service/Web3/types';
 
@@ -18,29 +16,13 @@ type AccountButtonProps = {
   connection: FetchData<void>;
   disconnection: FetchData<void>;
   links: Array<LinkItem>;
-  redirectOnDisconnectHref?: string;
   onConnect(connectorName: ConnectorName): Promise<void>;
   onDisconnect(): Promise<void>;
 };
 
 const AccountButton: FC<AccountButtonProps> = observer(
-  ({
-    Modal,
-    address,
-    connection,
-    disconnection,
-    links,
-    redirectOnDisconnectHref,
-    onConnect,
-    onDisconnect,
-  }) => {
+  ({ Modal, address, connection, disconnection, links, onConnect, onDisconnect }) => {
     const modalState = useModalState();
-    const router = useRouter();
-    const mounted = useMounted();
-
-    useEffect(() => {
-      if (!address.value && redirectOnDisconnectHref && mounted) router.replace('/');
-    }, [address.value, redirectOnDisconnectHref, router, mounted]);
 
     const handleDisconnectButtonClick = () => {
       try {
