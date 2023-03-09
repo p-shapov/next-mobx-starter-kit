@@ -6,6 +6,6 @@ import type { ConnectorName } from 'service/Web3/types';
 
 export interface IWallet {
   address: Datapoint<Address | undefined>;
-  connect: Action<void, [wallet: ConnectorName], true>;
+  connect: Action<void, [wallet: ConnectorName]>;
   disconnect: Action<void>;
 }
