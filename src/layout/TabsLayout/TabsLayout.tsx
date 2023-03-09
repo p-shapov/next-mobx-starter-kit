@@ -25,9 +25,11 @@ export const TabsLayout: FC<TabsLayoutProps> = ({ items }) => {
     }
   }, [items, router]);
 
-  const mkHandleTabItemClick = (href: string) => () => {
-    router.replace(href, undefined, { shallow: true });
-  };
+  useEffect(() => {
+    if (tabListState.activeId && tabListState.activeId !== router.pathname) {
+      router.replace(tabListState.activeId, undefined, { shallow: true });
+    }
+  }, [router, tabListState.activeId]);
 
   return (
     <div className={styles['root']}>
@@ -40,13 +42,7 @@ export const TabsLayout: FC<TabsLayoutProps> = ({ items }) => {
             badge,
             ...item
           }) => (
-            <Tab
-              as={Button}
-              key={item.href}
-              id={item.href}
-              className={styles['tabItem']}
-              onClick={mkHandleTabItemClick(item.href)}
-            >
+            <Tab as={Button} key={item.href} id={item.href} className={styles['tabItem']}>
               {title}
               {badge && (
                 <span className={styles['tabBadge']}>
